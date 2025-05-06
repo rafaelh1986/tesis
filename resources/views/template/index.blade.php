@@ -43,12 +43,7 @@
                     
                 </div>
 
-            </a>
-
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
-            
+            </a>        
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -59,15 +54,7 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{{route('persona.index')}}"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Persona</span>
-                </a> 
-            </li>
-
-
+        
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('usuario.index')}}" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -76,17 +63,154 @@
                 </a> 
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('rol.index')}}" data-target="#collapsePages"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Roles</span>
+                </a> 
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('permiso.index')}}" data-target="#collapsePages"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Permisos</span>
+                </a> 
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Asignación
+            </div>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('asignacion.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Asignación</span>
+                </a> 
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Asignación
+                Gestión
             </div>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('persona.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Persona</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('empleado.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Empleado</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('ciudad.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Ciudad</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('area.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Area</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('cargo.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Cargo</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('marca.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Marca</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('modelo.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Modelo</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('equipo.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Equipo</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('tipo_equipo.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Tipo de equipo</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('inventario.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Inventario</span>
+                </a> 
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('bajainventario.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Baja de inventario</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('motivo_baja.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Motivo de baja</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('proveedor.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Proveedor</span>
+                </a> 
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('salida_revision.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Salida a revisión</span>
+                </a> 
+            </li>
+
             <!-- Divider -->
             <hr class="sidebar-divider">
-            
-
+            <div class="sidebar-heading">
+                Gráficos
+            </div>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('salida_revision.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Cantidad de laptops</span>
+                </a> 
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
