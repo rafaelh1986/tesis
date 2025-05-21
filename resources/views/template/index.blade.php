@@ -44,10 +44,10 @@
                 </div>
 
             </a>        
-
+            
             <!-- Divider -->
             <hr class="sidebar-divider">
-
+            @can('usuario.index')
             <!-- Heading -->
             <div class="sidebar-heading">
                 Admin
@@ -80,7 +80,8 @@
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
-            
+            @endcan
+            @can('asignacion.index')
             <!-- Heading -->
             <div class="sidebar-heading">
                 Asignación
@@ -94,11 +95,12 @@
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider">
-
+            @endcan
             <!-- Heading -->
             <div class="sidebar-heading">
                 Gestión
             </div>
+            @can('persona.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('persona.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -106,6 +108,8 @@
                     <span>Persona</span>
                 </a> 
             </li>
+            @endcan
+            @can('empleado.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('empleado.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -113,6 +117,8 @@
                     <span>Empleado</span>
                 </a> 
             </li>
+            @endcan
+            @can('ciudad.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('ciudad.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -120,6 +126,8 @@
                     <span>Ciudad</span>
                 </a> 
             </li>
+            @endcan
+            @can('area.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('area.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -127,6 +135,8 @@
                     <span>Area</span>
                 </a> 
             </li>
+            @endcan
+            @can('cargo.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('cargo.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -134,6 +144,8 @@
                     <span>Cargo</span>
                 </a> 
             </li>
+            @endcan
+            @can('marca.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('marca.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -141,6 +153,8 @@
                     <span>Marca</span>
                 </a> 
             </li>
+            @endcan
+            @can('modelo.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('modelo.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -148,6 +162,8 @@
                     <span>Modelo</span>
                 </a> 
             </li>
+            @endcan
+            @can('equipo.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('equipo.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -155,6 +171,8 @@
                     <span>Equipo</span>
                 </a> 
             </li>
+            @endcan
+            @can('tipo_equipo.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('tipo_equipo.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -162,6 +180,8 @@
                     <span>Tipo de equipo</span>
                 </a> 
             </li>
+            @endcan
+            @can('inventario.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('inventario.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -169,7 +189,8 @@
                     <span>Inventario</span>
                 </a> 
             </li>
-
+            @endcan
+            @can('baja_inventario.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('bajainventario.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -177,6 +198,8 @@
                     <span>Baja de inventario</span>
                 </a> 
             </li>
+            @endcan
+            @can('motivo_baja.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('motivo_baja.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -184,6 +207,8 @@
                     <span>Motivo de baja</span>
                 </a> 
             </li>
+            @endcan
+            @can('proveedor.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('proveedor.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -191,6 +216,8 @@
                     <span>Proveedor</span>
                 </a> 
             </li>
+            @endcan
+            @can('salida_revision.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('salida_revision.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -198,6 +225,7 @@
                     <span>Salida a revisión</span>
                 </a> 
             </li>
+            @endcan
 
             <!-- Divider -->
             <hr class="sidebar-divider">
