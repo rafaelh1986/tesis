@@ -20,7 +20,7 @@ class AreaController extends Controller
         $this->middleware(['permission:area.show'])->only('show');
     }
     public function index(Request $request){
-        $areas =Area::paginate(5);
+        $areas =Area::paginate(10);
         return view('admin/area/index')->with('areas',$areas);
     }
     public function create(){
