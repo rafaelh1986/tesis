@@ -22,6 +22,7 @@ use App\Http\Controllers\AsignacionController;
 use App\Http\Controllers\DetalleAsignacionController;
 use App\Http\Controllers\SalidaRevisionController;
 use App\Http\Controllers\BajaInventarioController;
+use App\Http\Controllers\TratamientoController;
 
 
 
@@ -73,6 +74,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('/asignacion',AsignacionController::class);
     Route::resource('/salida_revision',SalidaRevisionController::class);
     Route::resource('/bajainventario',BajaInventarioController::class);
+    Route::resource('/tratamiento',TratamientoController::class);
 
 
     Route::get('usuario/{id}/reset_password',[UsuarioController::class, 'reset_password'])->name('usuario.reset_password');
