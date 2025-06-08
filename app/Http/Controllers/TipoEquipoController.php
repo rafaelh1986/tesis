@@ -10,13 +10,13 @@ class TipoEquipoController extends Controller
     public function __construct()
     {
         // examples:
-        $this->middleware(['permission:tipoequipo.index'])->only('index');
-        $this->middleware(['permission:tipoequipo.create'])->only('create');
-        $this->middleware(['permission:tipoequipo.store'])->only('store');
-        $this->middleware(['permission:tipoequipo.edit'])->only('edit');
-        $this->middleware(['permission:tipoequipo.update'])->only('update');
-        $this->middleware(['permission:tipoequipo.destroy'])->only('destroy');
-        $this->middleware(['permission:tipoequipo.show'])->only('show');
+        $this->middleware(['permission:tipo_equipo.index'])->only('index');
+        $this->middleware(['permission:tipo_equipo.create'])->only('create');
+        $this->middleware(['permission:tipo_equipo.store'])->only('store');
+        $this->middleware(['permission:tipo_equipo.edit'])->only('edit');
+        $this->middleware(['permission:tipo_equipo.update'])->only('update');
+        $this->middleware(['permission:tipo_equipo.destroy'])->only('destroy');
+        $this->middleware(['permission:tipo_equipo.show'])->only('show');
     }
 
     public function index(Request $request){
