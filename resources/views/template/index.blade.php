@@ -47,14 +47,14 @@
             
             <!-- Divider -->
             <hr class="sidebar-divider">
-            @can('usuario.index')
+            
             <!-- Heading -->
             <div class="sidebar-heading">
                 Admin
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-        
+            @can('usuario.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('usuario.index')}}" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -62,7 +62,8 @@
                     <span>Usuario</span>
                 </a> 
             </li>
-
+            @endcan
+            @can('roles.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('rol.index')}}" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -70,7 +71,8 @@
                     <span>Roles</span>
                 </a> 
             </li>
-
+            @endcan
+            @can('permiso.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('permiso.index')}}" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -78,14 +80,15 @@
                     <span>Permisos</span>
                 </a> 
             </li>
+            @endcan
             <!-- Divider -->
             <hr class="sidebar-divider">
-            @endcan
             @can('asignacion.index')
             <!-- Heading -->
             <div class="sidebar-heading">
                 Asignación
             </div>
+            
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('asignacion.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
@@ -93,9 +96,10 @@
                     <span>Asignación</span>
                 </a> 
             </li>
+            @endcan
             <!-- Divider -->
             <hr class="sidebar-divider">
-            @endcan
+            
             <!-- Heading -->
             <div class="sidebar-heading">
                 Gestión
@@ -190,7 +194,7 @@
                 </a> 
             </li>
             @endcan
-            @can('baja_inventario.index')
+            @can('bajainventario.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('bajainventario.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
