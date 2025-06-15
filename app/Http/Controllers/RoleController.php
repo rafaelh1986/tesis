@@ -68,12 +68,9 @@ class RoleController extends Controller
     }
 
     public function permiso(Request $request){
-        //dd($request);
-        $permisos = $request->permisos;
         $rol = Role::find($request->rol_id);
-        foreach ($permisos as $permiso) {
-            $rol->givePermissionTo($permiso);
-        }
-        return redirect()->route('rol.index');
+        $permisos = $request->permisos ?? []; // Si no hay permisos seleccionados, será un array vacío
+        $rol->syncPermissions($permisos);
+        return redirect()->route('rol.index')->with('success', 'Permisos actualizados correctamente');
     }
 }
