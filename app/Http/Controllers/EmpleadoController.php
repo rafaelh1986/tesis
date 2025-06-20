@@ -68,9 +68,15 @@ class EmpleadoController extends Controller
     }
     public function edit($id){
         $empleado = Empleado::find($id);
-        
+        $areas = Area::where('estado',1)->get();
+        $ciudades = Ciudad::where('estado',1)->get();
+        $cargos = Cargo::where('estado',1)->get();
 
-        return view('admin/empleado/edit')->with('empleado',$empleado);
+        return view('admin/empleado/edit')
+        ->with('empleado',$empleado)
+        ->with('areas', $areas)
+        ->with('ciudades', $ciudades)
+        ->with('cargos', $cargos);
     }
     public function update(Request $request,$id){
         //dd($request);

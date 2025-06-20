@@ -26,8 +26,13 @@
         <tbody>
             @foreach($inventarios as $inventario)
                 <tr>
-                    <td>{{$inventario->equipo->tipo_equipo->nombre}}</td>
-                    <td>{{$inventario->equipo->modelo->nombre_comercial}}</td>
+                    <td>
+                        {{$inventario->equipo && $inventario->equipo->modelo && $inventario->equipo->modelo->tipo_equipo ? 
+                        $inventario->equipo->modelo->tipo_equipo->nombre: '-'}}
+                    </td>
+                    <td>
+                        {{ $inventario->equipo && $inventario->equipo->modelo ? $inventario->equipo->modelo->nombre_comercial : '-' }}
+                    </td>
                     <td>{{$inventario->numero_serie}}</td>
                     <td>{{$inventario->codigo_activo_fijo}}</td>
                     <td>

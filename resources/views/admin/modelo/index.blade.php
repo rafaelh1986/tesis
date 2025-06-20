@@ -16,7 +16,7 @@
     <table class="table table-striped" >
         <thead>
             <tr>
-                <td><b>ID</b></td>
+                <td><b>Tipo equipo</b></td>
                 <td><b>Nombre comercial</b></td>
                 <td><b>Nombre tecnico</b></td>
                 <td><b>Estado</b></td>
@@ -26,7 +26,7 @@
         <tbody>
             @foreach($modelos as $modelo)
                 <tr>
-                    <td>{{$modelo->id}}</td>
+                    <td>{{$modelo->tipo_equipo->nombre}}</td>
                     <td>{{$modelo->nombre_comercial}}</td>
                     <td>{{$modelo->nombre_tecnico}}</td>
                     <td>@if($modelo->estado==0)

@@ -19,7 +19,6 @@
                 <td><b>CI</b></td>
                 <td><b>Nombre</b></td>
                 <td><b>Apellidos</b></td>
-                <td><b>Estado</b></td>
                 <td><b>Opciones</b></td>
             </tr>
         </thead>
@@ -29,12 +28,6 @@
                     <td>{{$persona->ci}}</td>
                     <td>{{$persona->nombres}}</td>
                     <td>{{$persona->apellidos}}</td>
-                    <td>@if($persona->estado==0)
-                            <label for=""style="color:brown">Inactivo</label>
-                        @else
-                            <label for="">Activo</label>
-                        @endif
-                    </td>
                     <td>
                         <a href="{{route('persona.show' , $persona->id)}}"
                             class="btn btn-sm btn-primary">

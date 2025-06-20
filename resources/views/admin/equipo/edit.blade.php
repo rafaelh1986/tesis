@@ -16,23 +16,29 @@
         @csrf
         @method('PUT')
         <div class="row">
-            
             <div class="col-md-3">
-                <input type="hidden" name="id_tipo_equipo" id="" class="form-control" readonly
-                    value="{{$equipo->id_tipo_equipo}}">
                 <label for="">Modelo</label>
-                <input type="text" name="id_modelo" id="" class="form-control" 
-                    value="{{$equipo->modelo->nombre_comercial}}">
+                <select name="id_modelo" class="form-control" required>
+                    @foreach($modelos as $modelo)
+                        <option value="{{$modelo->id}}" {{$equipo->id_modelo == $modelo->id ? 'selected' : ''}}>{{$modelo->nombre_comercial}}</option>
+                    @endforeach 
+                </select>
             </div>
             <div class="col-md-3">
                 <label for="">Marca</label>
-                <input type="text" name="id_marca" id="" class="form-control" 
-                    value="{{$equipo->marca->nombre}}">
+                <select name="id_marca" class="form-control" required>
+                    @foreach($marcas as $marca)
+                        <option value="{{$marca->id}}" {{$equipo->id_marca == $marca->id ? 'selected' : ''}}>{{$marca->nombre}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="col-md-3">
                 <label for="">Proveedor</label>
-                <input type="text" name="id_proveedor" id="" class="form-control" 
-                    value="{{$equipo->proveedor->razon_social}}">
+                <select name="id_proveedor" class="form-control" required>
+                    @foreach($proveedores as $proveedor)
+                        <option value="{{$proveedor->id}}" {{$equipo->id_proveedor == $proveedor->id ? 'selected' : ''}}>{{$proveedor->razon_social}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="col-md-3">
                 <label for="">Garantia</label>
@@ -41,7 +47,7 @@
             </div>
             <div class="col-md-3">
                 <label for="">Cantidad</label>
-                <input type="numerico" name="cantidad" id="" class="form-control" 
+                <input type="number" name="cantidad" id="" class="form-control" 
                     value="{{$equipo->cantidad}}" required>
             </div>
             <div class="col-md-3">

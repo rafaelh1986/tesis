@@ -19,7 +19,6 @@
                 <td><b>Nombre completo</b></td>
                 <td><b>Área</b></td>
                 <td><b>Cargo</b></td>
-                <td><b>Estado</b></td>
                 <td><b>Opciones</b></td>
             </tr>
         </thead>
@@ -29,12 +28,6 @@
                     <td>{{$empleado->persona->nombres.' '.$empleado->persona->apellidos}}</td>
                     <td>{{$empleado->area->nombre}}</td>
                     <td>{{$empleado->cargo->nombre}}</td>
-                    <td>@if($empleado->estado==0)
-                            <label for=""style="color:brown">Inactivo</label>
-                        @else
-                            <label for="">Activo</label>
-                        @endif
-                    </td>
                     <td>
                         <a href="{{route('empleado.show' , $empleado->id)}}"
                             class="btn btn-sm btn-primary">

@@ -112,7 +112,6 @@ class AsignacionController extends Controller
 
         }*/
         return redirect()->route('asignacion.index')->with('success','¡Editado Satisfactoriamente!');
-        //return redirect()->route('asignacion.notaAsignacion',$id)->with('success','¡Editado Satisfactoriamente!');
     }
 
 

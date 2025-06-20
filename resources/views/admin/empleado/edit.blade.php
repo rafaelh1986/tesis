@@ -22,19 +22,28 @@
                     value="{{$empleado->persona->nombres.' '.$empleado->persona->apellidos}}">
             </div>
             <div class="col-md-3">
-                <label for="">Area</label>
-                <input type="text" name="id_area" id="" class="form-control" 
-                    value="{{$empleado->area->nombre}}">
+                <label for="">Área</label>
+                <select name="id_area" class="form-control" required>
+                    @foreach($areas as $area)
+                        <option value="{{$area->id}}" {{$empleado->id_area == $area->id ? 'selected' : ''}}>{{$area->nombre}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="col-md-3">
                 <label for="">Ciudad</label>
-                <input type="text" name="id_ciudad" id="" class="form-control" 
-                    value="{{$empleado->ciudad->nombre}}">
+                <select name="id_ciudad" class="form-control" required>
+                    @foreach($ciudades as $ciudad)
+                        <option value="{{$ciudad->id}}" {{$empleado->id_ciudad == $ciudad->id ? 'selected' : ''}}>{{$ciudad->nombre}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="col-md-3">
                 <label for="">Cargo</label>
-                <input type="text" name="id_cargo" id="" class="form-control" 
-                    value="{{$empleado->cargo->nombre}}">
+                <select name="id_cargo" class="form-control" required>
+                    @foreach($cargos as $cargo)
+                        <option value="{{$cargo->id}}" {{$empleado->id_cargo == $cargo->id ? 'selected' : ''}}>{{$cargo->nombre}}</option>
+                    @endforeach
+                </select>
             </div>
             <div class="col-md-3">
                 <label for="">Email</label>
@@ -42,7 +51,7 @@
                     value="{{$empleado->email}}" required>
             </div>
             <div class="col-md-3">
-                <label for="">Interno</label>
+                <label for="">Telefono</label>
                 <input type="text" name="telefono_interno" id="" class="form-control" 
                     value="{{$empleado->telefono_interno}}" required>
             </div>

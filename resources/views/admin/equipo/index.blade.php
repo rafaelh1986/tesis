@@ -27,7 +27,7 @@
         <tbody>
             @foreach($equipos as $equipo)
                 <tr>
-                    <td>{{$equipo->tipo_equipo->nombre}}</td>
+                    <td>{{$equipo->modelo->tipo_equipo->nombre}}</td>
                     <td>{{$equipo->marca->nombre}}</td>
                     <td>{{$equipo->modelo->nombre_comercial}}</td>
                     <td>{{$equipo->proveedor->razon_social}}</td>

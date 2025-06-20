@@ -30,8 +30,9 @@
                     <td>
                         <b>Tipo de equipo</b>
                     </td>
+                    
                     <td>
-                        {{$equipo->tipo_equipo->nombre}}
+                        {{$equipo->modelo->tipo_equipo->nombre}}
                     </td>
                 </tr>
                 <tr>

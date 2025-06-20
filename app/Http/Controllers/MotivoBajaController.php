@@ -10,13 +10,13 @@ class MotivoBajaController extends Controller
     public function __construct()
     {
         // examples:
-        $this->middleware(['permission:motivobaja.index'])->only('index');
-        $this->middleware(['permission:motivobaja.create'])->only('create');
-        $this->middleware(['permission:motivobaja.store'])->only('store');
-        $this->middleware(['permission:motivobaja.edit'])->only('edit');
-        $this->middleware(['permission:motivobaja.update'])->only('update');
-        $this->middleware(['permission:motivobaja.destroy'])->only('destroy');
-        $this->middleware(['permission:motivobaja.show'])->only('show');
+        $this->middleware(['permission:motivo_baja.index'])->only('index');
+        $this->middleware(['permission:motivo_baja.create'])->only('create');
+        $this->middleware(['permission:motivo_baja.store'])->only('store');
+        $this->middleware(['permission:motivo_baja.edit'])->only('edit');
+        $this->middleware(['permission:motivo_baja.update'])->only('update');
+        $this->middleware(['permission:motivo_baja.destroy'])->only('destroy');
+        $this->middleware(['permission:motivo_baja.show'])->only('show');
     }
 
     public function index(Request $request){

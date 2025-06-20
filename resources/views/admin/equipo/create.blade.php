@@ -16,18 +16,10 @@
         @csrf
         @method('POST')
         <div class="row">
-            <div class="col-md-3">
-                <label for="">Tipo de equipo</label>
-                <select name="id_tipo_equipo" id=""class="form-control" required>
-                    <option value="">Seleccionar</option>
-                    @foreach($tipo_equipos as $tipo_equipo)
-                        <option value="{{$tipo_equipo->id}}">{{$tipo_equipo->nombre}}</option>
-                    @endforeach
-                </select>
-            </div>
+            
             <div class="col-md-3">
                 <label for="">Modelo</label>
-                <select name="id_modelo" id=""class="form-control" required>
+                <select name="id_modelo" id="modelo" class="form-control" required>
                     <option value="">Seleccionar</option>
                     @foreach($modelos as $modelo)
                         <option value="{{$modelo->id}}">{{$modelo->nombre_comercial}}</option>
@@ -76,4 +68,40 @@
             </div>
     </form>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var tipoEquipoSelect = document.getElementById('tipo_equipo');
+    var modeloSelect = document.getElementById('modelo');
+
+    tipoEquipoSelect.addEventListener('change', function() {
+        var tipoId = this.value;
+        modeloSelect.innerHTML = '<option value="">Seleccionar</option>';
+
+        if(tipoId) {
+            fetch('modelos-por-tipo/' + tipoId)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(function(modelo) {
+                        if(tipoEquipoSelect.options[tipoEquipoSelect.selectedIndex].text.trim().toLowerCase() === 'laptop') {
+                            if(modelo.nombre_comercial.trim().toLowerCase().startsWith('thinkpad')) {
+                                var option = document.createElement('option');
+                                option.value = modelo.id;
+                                option.text = modelo.nombre_comercial;
+                                modeloSelect.appendChild(option);
+                            }
+                        } else {
+                            var option = document.createElement('option');
+                            option.value = modelo.id;
+                            option.text = modelo.nombre_comercial;
+                            modeloSelect.appendChild(option);
+                        }
+                    });
+                });
+        }
+    });
+});
+</script>
+@endpush
 

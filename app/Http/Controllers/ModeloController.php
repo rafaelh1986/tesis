@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Modelo;
+use App\Models\TipoEquipo;
 
 use Illuminate\Http\Request;
 
@@ -24,11 +25,13 @@ class ModeloController extends Controller
         return view('admin/modelo/index')->with('modelos',$modelos);
     }
     public function create(){
-        return view('admin/modelo/create');
+        $tipo_equipos = TipoEquipo::where('estado',1)->get();
+        return view('admin/modelo/create')->with('tipo_equipos',$tipo_equipos);
     }
     public function store(Request $request){
         //dd($request);
         $modelo = new Modelo();
+        $modelo->id_tipo_equipo = $request->id_tipo_equipo;
         $modelo->nombre_comercial = $request->nombre_comercial;
         $modelo->nombre_tecnico = $request->nombre_tecnico;
         //dd($persona);
@@ -37,7 +40,8 @@ class ModeloController extends Controller
     }
     public function show($id){
         $modelo = Modelo::find($id);
-        return view('admin/modelo/show')->with('modelo',$modelo);
+        $tipo_equipo = TipoEquipo::find($id);
+        return view('admin/modelo/show')->with('modelo',$modelo)->with('tipo_equipo',$tipo_equipo);
     }
     public function edit($id){
         $modelo = Modelo::find($id);
@@ -46,6 +50,7 @@ class ModeloController extends Controller
     public function update(Request $request,$id){
         //dd($request);
         $modelo = Modelo::find($id);
+        $equipo->id_tipo_equipo = $request->id_tipo_equipo;
         $modelo->nombre_comercial = $request->nombre_comercial;
         $modelo->nombre_tecnico = $request->nombre_tecnico;
         $modelo->save();

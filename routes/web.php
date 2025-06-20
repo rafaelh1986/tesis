@@ -44,6 +44,7 @@ use App\Http\Controllers\BajaInventarioController;
 Route::get('/dashboard', function () {
     return view('inicio');
 })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/modelos-por-tipo/{id}', [EquipoController::class, 'getModelosPorTipo']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -97,6 +98,8 @@ Route::middleware('auth')->group(function () {
     Route::get('salida_revision/{id}/destroy',[SalidaRevisionController::class, 'destroy'])->name('salida_revision.destroy');
     Route::get('bajainventario/{id}/destroy',[BajaInventarioController::class, 'destroy'])->name('bajainventario.destroy');
 
+    
+
     Route::post('asignacion/storeDetalle',[AsignacionController::class, 'storeDetalle'])->name('asignacion.storeDetalle');
     Route::get('asignacion/{id}/cancelar',[AsignacionController::class, 'cancelar'])->name('asignacion.cancelar');
     Route::get('asignacion/{id}/destroyDetalle',[AsignacionController::class, 'destroyDetalle'])->name('asignacion.destroyDetalle');
@@ -105,6 +108,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('rol/permiso',[RoleController::class, 'permiso'])->name('rol.permiso');
     Route::post('usuario/asignar_roles',[UsuarioController::class, 'asignar_roles'])->name('usuario.asignar_roles');
+    
+    
 });
 
 

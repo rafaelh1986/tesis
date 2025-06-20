@@ -14,13 +14,13 @@ class BajaInventarioController extends Controller
     public function __construct()
     {
         
-        $this->middleware(['permission:bajainventario.index'])->only('index');
-        $this->middleware(['permission:bajainventario.create'])->only('create');
-        $this->middleware(['permission:bajainventario.store'])->only('store');
-        $this->middleware(['permission:bajainventario.edit'])->only('edit');
-        $this->middleware(['permission:bajainventario.update'])->only('update');
-        $this->middleware(['permission:bajainventario.destroy'])->only('destroy');
-        $this->middleware(['permission:bajainventario.show'])->only('show');
+        $this->middleware(['permission:baja_inventario.index'])->only('index');
+        $this->middleware(['permission:baja_inventario.create'])->only('create');
+        $this->middleware(['permission:baja_inventario.store'])->only('store');
+        $this->middleware(['permission:baja_inventario.edit'])->only('edit');
+        $this->middleware(['permission:baja_inventario.update'])->only('update');
+        $this->middleware(['permission:baja_inventario.destroy'])->only('destroy');
+        $this->middleware(['permission:baja_inventario.show'])->only('show');
     }
 
     public function index(Request $request){

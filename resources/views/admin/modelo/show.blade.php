@@ -19,7 +19,16 @@
             </thead>
             <tbody>
             <tr>
-            <tr>
+                <tr>
+                    <td>
+                        <b>Tipo de equipo</b>
+                    </td>
+                    
+                    <td>
+                        {{$modelo->tipo_equipo->nombre}}
+                    </td>
+                </tr>
+                <tr>
                     <td>
                         <b>Nombre Comercial</b>
                     </td>

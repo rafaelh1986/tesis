@@ -194,7 +194,7 @@
                 </a> 
             </li>
             @endcan
-            @can('bajainventario.index')
+            @can('baja_inventario.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('bajainventario.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">

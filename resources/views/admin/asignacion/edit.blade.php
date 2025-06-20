@@ -43,7 +43,7 @@
                     <option value="">Seleccionar</option>
                     @foreach($inventarios as $inventario)
                         <option value="{{$inventario->id}}">
-                            {{$inventario->equipo->tipo_equipo->nombre.', '.$inventario->equipo->modelo->nombre_comercial.', S/N:'.$inventario->numero_serie}}
+                            {{$inventario->equipo->modelo->tipo_equipo->nombre.', '.$inventario->equipo->modelo->nombre_comercial.', S/N:'.$inventario->numero_serie}}
                         </option>
                     @endforeach
                 </select>
@@ -72,7 +72,7 @@
                 <tbody>
                     @foreach($detalleAsignaciones as $detalleAsignacion)
                     <tr>
-                        <td>{{$detalleAsignacion->inventario->equipo->tipo_equipo->nombre}}</td>
+                        <td>{{$detalleAsignacion->inventario->equipo->modelo->tipo_equipo->nombre}}</td>
                         <td>{{$detalleAsignacion->inventario->equipo->modelo->nombre_comercial}}</td>
                         <td>{{$detalleAsignacion->inventario->numero_serie}}</td>
                         <td>

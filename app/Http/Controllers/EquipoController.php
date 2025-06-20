@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Equipo;
-use App\Models\TipoEquipo;
 use App\Models\Modelo;
 use App\Models\Marca;
 use App\Models\Proveedor;
@@ -32,17 +31,16 @@ class EquipoController extends Controller
         return view('admin/equipo/index')->with('equipos',$equipos);
     }
     public function create(){
-        $tipo_equipos = TipoEquipo::where('estado',1)->get();
+        
         $modelos = Modelo::where('estado',1)->get();
         $marcas = Marca::where('estado',1)->get();
         $proveedores = Proveedor::where('estado',1)->get();
-        return view('admin/equipo/create')->with('tipo_equipos',$tipo_equipos)->with('modelos',$modelos)
+        return view('admin/equipo/create')->with('modelos',$modelos)
             ->with('marcas',$marcas)->with('proveedores',$proveedores);
     }
     public function store(Request $request){
         //dd($request);
         $equipo = new Equipo();
-        $equipo->id_tipo_equipo = $request->id_tipo_equipo;
         $equipo->id_modelo = $request->id_modelo;
         $equipo->id_marca = $request->id_marca;
         $equipo->id_proveedor = $request->id_proveedor;
@@ -56,23 +54,26 @@ class EquipoController extends Controller
     }
     public function show($id){
         $equipo = Equipo::find($id);
-        $tipo_equipo = TipoEquipo::find($id);
         $modelo = Modelo::find($id);
         $marca = Marca::find($id);
         $proveedor = Proveedor::find($id);
-        return view('admin/equipo/show')->with('equipo',$equipo)->with('tipo_equipo',$tipo_equipo)->with('modelo',$modelo)
+        return view('admin/equipo/show')->with('equipo',$equipo)->with('modelo',$modelo)
             ->with('marca',$marca)->with('proveedor',$proveedor);
     }
     public function edit($id){
         $equipo = Equipo::find($id);
-        //dd($equipo);
-        return view('admin/equipo/edit')->with('equipo',$equipo);
+        $modelos = Modelo::where('estado',1)->get();
+        $marcas = Marca::where('estado',1)->get();
+        $proveedores = Proveedor::where('estado',1)->get();
+        return view('admin/equipo/edit')
+            ->with('equipo', $equipo)
+            ->with('modelos', $modelos)
+            ->with('marcas', $marcas)
+            ->with('proveedores', $proveedores);
     }
     public function update(Request $request,$id){
         //dd($request);
         $equipo =Equipo::find($id);
-        
-        $equipo->id_tipo_equipo = $request->id_tipo_equipo;
         $equipo->id_modelo = $request->id_modelo;
         $equipo->id_marca = $request->id_marca;
         $equipo->id_proveedor = $request->id_proveedor;
