@@ -17,7 +17,7 @@ class Asignacion extends Model
     public function empleado(){
         return $this->hasOne('App\Models\Empleado','id','id_empleado');
     }
-    public function detalle_asignacion(){
-        return $this->hasMany('App\Models\DetalleAsignacion','id_asignacion','id');
+    public function detalleAsignaciones(){
+        return $this->hasMany(DetalleAsignacion::class, 'id_asignacion');
     }
 };

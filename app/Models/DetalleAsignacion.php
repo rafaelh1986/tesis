@@ -20,4 +20,5 @@ class DetalleAsignacion extends Model
     public function inventario(){
         return $this->hasOne('App\Models\Inventario','id','id_inventario');
     }
+   
 };

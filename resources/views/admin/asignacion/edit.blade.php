@@ -39,14 +39,20 @@
                 <label for="">Equipo</label>
             </div>
             <div class="col-md-3">
-                <select name="id_inventario" id="">
-                    <option value="">Seleccionar</option>
-                    @foreach($inventarios as $inventario)
-                        <option value="{{$inventario->id}}">
-                            {{$inventario->equipo->modelo->tipo_equipo->nombre.', '.$inventario->equipo->modelo->nombre_comercial.', S/N:'.$inventario->numero_serie}}
-                        </option>
-                    @endforeach
-                </select>
+                <select name="id_inventario" id="id_inventario" class="form-control">
+                <option value="">Seleccionar</option>
+                @foreach($inventarios as $inventario)
+                    <option value="{{$inventario->id}}">
+                        {{
+                            $inventario->equipo && $inventario->equipo->modelo 
+                            && $inventario->equipo->modelo->tipo_equipo
+                                ? $inventario->equipo->modelo->tipo_equipo->nombre.',
+                                 '.$inventario->equipo->modelo->nombre_comercial.', S/N:'.$inventario->numero_serie
+                                : 'Equipo incompleto (ID: '.$inventario->id.')'
+                        }}
+                    </option>
+                @endforeach
+            </select>
             </div>
             <div class="col-md-1">
             <input type="hidden" name="id_asignacion" value="{{$asignacion->id}}">
@@ -59,7 +65,7 @@
         </div>
     </form>
     <div class="row">
-        <div class="col-md-12" class="table-responsive">
+        <div class="col-md-12 table-responsive">
             <table class="table table-striped mt-4">
                 <thead>
                     <tr>
@@ -72,9 +78,30 @@
                 <tbody>
                     @foreach($detalleAsignaciones as $detalleAsignacion)
                     <tr>
-                        <td>{{$detalleAsignacion->inventario->equipo->modelo->tipo_equipo->nombre}}</td>
-                        <td>{{$detalleAsignacion->inventario->equipo->modelo->nombre_comercial}}</td>
-                        <td>{{$detalleAsignacion->inventario->numero_serie}}</td>
+                        <td>
+                            {{
+                                $detalleAsignacion->inventario
+                                && $detalleAsignacion->inventario->equipo
+                                && $detalleAsignacion->inventario->equipo->modelo
+                                && $detalleAsignacion->inventario->equipo->modelo->tipo_equipo
+                                ? $detalleAsignacion->inventario->equipo->modelo->tipo_equipo->nombre
+                                : '-'
+                            }}
+                        </td>
+                        <td>
+                            {{
+                                $detalleAsignacion->inventario
+                                && $detalleAsignacion->inventario->equipo
+                                && $detalleAsignacion->inventario->equipo->modelo
+                                ? $detalleAsignacion->inventario->equipo->modelo->nombre_comercial
+                                : '-'
+                            }}
+                        </td>
+                        <td>
+                            {{ 
+                                $detalleAsignacion->inventario ? $detalleAsignacion->inventario->numero_serie : '-' 
+                            }}
+                        </td>
                         <td>
                             <a href="{{route('asignacion.destroyDetalle', $detalleAsignacion->id)}}"
                                     class="btn btn-sm btn-danger" onclick="return confirm('¿Estas seguro?')">
@@ -99,9 +126,9 @@
             <form action="{{route('asignacion.update', $asignacion->id)}}" method="post">
             @csrf
             @method('PUT')
-                <input type="hidden" name="id" value="$asignacion->id">
+                <input type="hidden" name="id" value="{{$asignacion->id}}">
                 <button type="submit"class="btn btn-block btn-success">
-                    <i class="fas fa-print"></i> Guardar
+                    <i class="fas fa-save"></i> Guardar
                 </button>
             </form>
         </div>

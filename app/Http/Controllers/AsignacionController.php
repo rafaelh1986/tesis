@@ -52,30 +52,28 @@ class AsignacionController extends Controller
         $id_inventario = $request->id_inventario;
         $id_asignacion = $request->id_asignacion;
         if($this->verificarItemExistenteEnAsignacion($id_inventario, $id_asignacion)==false){
+            //dd($id_inventario,$id_asignacion);
             $detalle->id_inventario = $request->id_inventario;
             $detalle->id_asignacion = $request->id_asignacion;
-            $detalle->inventario->estado = 2;
-            $detalle->inventario->save();
-            $detalle->estado = 2;
+            $detalle->estado = 1;
             $detalle->save();
+
+            $inventario = Inventario::find($request->id_inventario);
+            if ($inventario) {
+                $inventario->estado = 2;
+                $inventario->save();
+            }
         }
         
         return redirect()->route('asignacion.edit',$request->id_asignacion);
     }
 
-    public function verificarItemExistenteEnAsignacion($id_inventario,$id_asignacion){
-        $asignacion = Asignacion::find($id_asignacion);
-        
-        foreach ($asignacion->detalle_asignacion as $detalle) {
-            if($detalle->estado == 1){
-                $inventario_id_detalle = $detalle->id_inventario;
-                if($inventario_id_detalle == $id_inventario ){
-                    return true;
-                }
-            }  
-        }
-        return false;
-        
+    public function verificarItemExistenteEnAsignacion($id_inventario, $id_asignacion)
+    {
+        return DetalleAsignacion::where('id_asignacion', $id_asignacion)
+            ->where('id_inventario', $id_inventario)
+            ->where('estado', 1) // o el estado que uses para asignado
+            ->exists();
     }
 
     public function show($id){
@@ -86,7 +84,7 @@ class AsignacionController extends Controller
     public function edit($id){
         $asignacion = Asignacion::find($id);
         $inventarios = Inventario::where('estado',1)->get();
-        $detalleAsignaciones = DetalleAsignacion::where('id_asignacion',$id)->where('estado',2)->get();
+        $detalleAsignaciones = DetalleAsignacion::where('id_asignacion',$id)->where('estado',1)->get();
         return view('admin/asignacion/edit')->with('asignacion',$asignacion)
             ->with('inventarios',$inventarios)->with('detalleAsignaciones',$detalleAsignaciones);
     }
@@ -115,37 +113,65 @@ class AsignacionController extends Controller
     }
 
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         $asignacion = Asignacion::find($id);
-        if($asignacion->estado == 1){
-            $asignacion->estado = 0;
+
+        // Cambiar estado de los detalles y de los inventarios asociados
+        foreach ($asignacion->detalleAsignaciones as $detalle) {
+            if ($detalle->estado == 1) { // Solo si está asignado
+                $detalle->estado = 0;
+                $detalle->save();
+
+                $inventario = Inventario::find($detalle->id_inventario);
+                if ($inventario) {
+                    $inventario->estado = 1; // disponible
+                    $inventario->save();
+                }
+            }
         }
-        else{
-            $asignacion->estado = 1;
-        }
+        // Cambiar estado de la asignación a eliminado
+        $asignacion->estado = 0; 
         $asignacion->save();
+
         return redirect()->route('asignacion.index');
     }
 
     public function destroyDetalle($id){
         $detalle = DetalleAsignacion::find($id);
-        $detalle->estado = 1;
-        $detalle->save();
-        return redirect()->route('asignacion.edit',$detalle->id_asignacion);
-    }
-    public function cancelar($id){
-        $asignacion = Asignacion::find($id);
-        //dd($asignacion);
-        $detalleAsig = DetalleAsignacion::where('id_asignacion',$asignacion->id);
-        //dd($detalleAsig);
-        foreach($asignacion->detalle_asignacion as $detalle){
-            
-            
+        // Cambiar estado del inventario a disponible (por ejemplo, 1)
+        if ($detalle && $detalle->estado == 1) { // Solo si está asignado
             $detalle->estado = 0;
             $detalle->save();
+
+            $inventario = Inventario::find($detalle->id_inventario);
+            if ($inventario) {
+                $inventario->estado = 1; // disponible
+                $inventario->save();
+            }
         }
-        
-        
+        return redirect()->route('asignacion.edit', $detalle->id_asignacion);
+    }
+    public function cancelar($id)
+    {
+        $asignacion = Asignacion::find($id);
+
+        foreach ($asignacion->detalleAsignaciones as $detalle) {
+            if ($detalle->estado == 1) { // Solo si está asignado
+                $detalle->estado = 0;
+                $detalle->save();
+
+                $inventario = Inventario::find($detalle->id_inventario);
+                if ($inventario) {
+                    $inventario->estado = 1; // disponible
+                    $inventario->save();
+                }
+            }
+        }
+
+        $asignacion->estado = 0;
+        $asignacion->save();
+
         return redirect()->route('asignacion.index');
     }
         
