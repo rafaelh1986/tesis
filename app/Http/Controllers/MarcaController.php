@@ -19,48 +19,66 @@ class MarcaController extends Controller
         $this->middleware(['permission:marca.show'])->only('show');
     }
 
-    public function index(Request $request){
-        $marcas =Marca::paginate(5);
-        return view('admin/marca/index')->with('marcas',$marcas);
+    public function index(Request $request)
+    {
+        $marcas = Marca::paginate(5);
+        return view('admin/marca/index')->with('marcas', $marcas);
     }
-    public function create(){
-        
+    public function create()
+    {
+
         return view('admin/marca/create');
     }
-    public function store(Request $request){
-        //dd($request);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255|unique:marca,nombre',
+        ]);
         $marca = new Marca();
         $marca->nombre = $request->nombre;
-        //dd($ciudad);
         $marca->save();
-        return redirect()->route('marca.index')->with('success','¡Creado Satisfactoriamente!');
+        return redirect()->route('marca.index')->with('success', '¡Creado Satisfactoriamente!');
     }
-    public function show($id){
+    public function show($id)
+    {
         $marca = Marca::find($id);
-        return view('admin/marca/show')->with('marca',$marca);
+        if (!$marca) {
+            return redirect()->route('marca.index')->with('error', 'Marca no encontrada.');
+        }
+        return view('admin/marca/show')->with('marca', $marca);
     }
-    public function edit($id){
+    public function edit($id)
+    {
         $marca = Marca::find($id);
-        return view('admin/marca/edit')->with('marca',$marca);
+        if (!$marca) {
+            return redirect()->route('marca.index')->with('error', 'Marca no encontrada.');
+        }
+        return view('admin/marca/edit')->with('marca', $marca);
     }
-    public function update(Request $request,$id){
-        //dd($request);
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nombre' => 'required|string|max:255|unique:marca,nombre,' . $id,
+        ]);
         $marca = Marca::find($id);
         $marca->nombre = $request->nombre;
         $marca->save();
-        return redirect()->route('marca.index')->with('success','¡Editado Satisfactoriamente!');
+        return redirect()->route('marca.index')->with('success', '¡Editado Satisfactoriamente!');
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $marca = Marca::find($id);
-        if($marca->estado == 1){
+        if (!$marca) {
+            return redirect()->route('marca.index')->with('error', 'Marca no encontrada.');
+        }
+        if ($marca->estado == 1) {
             $marca->estado = 0;
             $mensaje = "¡Eliminado Satisfactoriamente!";
-        }
-        else{
+        } else {
             $marca->estado = 1;
             $mensaje = "¡Restaurado Satisfactoriamente!";
         }
         $marca->save();
-        return redirect()->route('marca.index')->with('success',$mensaje);
+        return redirect()->route('marca.index')->with('success', $mensaje);
     }
 }

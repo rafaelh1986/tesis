@@ -16,16 +16,16 @@ class Empleado extends Model
     'fecha_ingreso','fecha_salida','estado','created_at','updated_at'];
 
     public function persona(){
-        return $this->hasOne('App\Models\Persona','id','id_persona');
+        return $this->belongsTo('App\Models\Persona', 'id_persona');
     }
     public function area(){
-        return $this->hasOne('App\Models\Area','id','id_area');
+        return $this->belongsTo('App\Models\Area', 'id_area');
     }
     public function ciudad(){
-        return $this->hasOne('App\Models\Ciudad','id','id_ciudad');
+        return $this->belongsTo('App\Models\Ciudad', 'id_ciudad');
     }
     public function cargo(){
-        return $this->hasOne('App\Models\Cargo','id','id_cargo');
+        return $this->belongsTo('App\Models\Cargo', 'id_cargo');
     }
     
 };

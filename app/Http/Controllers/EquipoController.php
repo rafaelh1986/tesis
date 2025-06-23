@@ -15,7 +15,7 @@ class EquipoController extends Controller
     //
     public function __construct()
     {
-        
+
         $this->middleware(['permission:equipo.index'])->only('index');
         $this->middleware(['permission:equipo.create'])->only('create');
         $this->middleware(['permission:equipo.store'])->only('store');
@@ -25,21 +25,32 @@ class EquipoController extends Controller
         $this->middleware(['permission:equipo.show'])->only('show');
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         //dd($request);
         $equipos = Equipo::paginate(5);
-        return view('admin/equipo/index')->with('equipos',$equipos);
+        return view('admin/equipo/index')->with('equipos', $equipos);
     }
-    public function create(){
-        
-        $modelos = Modelo::where('estado',1)->get();
-        $marcas = Marca::where('estado',1)->get();
-        $proveedores = Proveedor::where('estado',1)->get();
-        return view('admin/equipo/create')->with('modelos',$modelos)
-            ->with('marcas',$marcas)->with('proveedores',$proveedores);
+    public function create()
+    {
+
+        $modelos = Modelo::where('estado', 1)->get();
+        $marcas = Marca::where('estado', 1)->get();
+        $proveedores = Proveedor::where('estado', 1)->get();
+        return view('admin/equipo/create')->with('modelos', $modelos)
+            ->with('marcas', $marcas)->with('proveedores', $proveedores);
     }
-    public function store(Request $request){
-        //dd($request);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'id_modelo' => 'required|exists:modelos,id',
+            'id_marca' => 'required|exists:marcas,id',
+            'id_proveedor' => 'required|exists:proveedores,id',
+            'garantia' => 'nullable|string|max:255',
+            'cantidad' => 'required|integer|min:1',
+            'fecha_recepcion' => 'required|date',
+            'orden_compra' => 'nullable|string|max:255',
+        ]);
         $equipo = new Equipo();
         $equipo->id_modelo = $request->id_modelo;
         $equipo->id_marca = $request->id_marca;
@@ -48,68 +59,93 @@ class EquipoController extends Controller
         $equipo->cantidad = $request->cantidad;
         $equipo->fecha_recepcion = $request->fecha_recepcion;
         $equipo->orden_compra = $request->orden_compra;
-        
+
         $equipo->save();
-        return redirect()->route('equipo.index')->with('success','¡Creado Satisfactoriamente!');
+        return redirect()->route('equipo.index')->with('success', '¡Creado Satisfactoriamente!');
     }
-    public function show($id){
+    public function show($id)
+    {
         $equipo = Equipo::find($id);
-        $modelo = Modelo::find($id);
-        $marca = Marca::find($id);
-        $proveedor = Proveedor::find($id);
-        return view('admin/equipo/show')->with('equipo',$equipo)->with('modelo',$modelo)
-            ->with('marca',$marca)->with('proveedor',$proveedor);
+        if (!$equipo) {
+            return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
+        }
+        // Usar relaciones Eloquent definidas en el modelo Equipo
+        return view('admin/equipo/show')
+            ->with('equipo', $equipo)
+            ->with('modelo', $equipo->modelo)
+            ->with('marca', $equipo->marca)
+            ->with('proveedor', $equipo->proveedor);
     }
-    public function edit($id){
+    public function edit($id)
+    {
         $equipo = Equipo::find($id);
-        $modelos = Modelo::where('estado',1)->get();
-        $marcas = Marca::where('estado',1)->get();
-        $proveedores = Proveedor::where('estado',1)->get();
+        if (!$equipo) {
+            return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
+        }
+        $modelos = Modelo::where('estado', 1)->get();
+        $marcas = Marca::where('estado', 1)->get();
+        $proveedores = Proveedor::where('estado', 1)->get();
         return view('admin/equipo/edit')
             ->with('equipo', $equipo)
             ->with('modelos', $modelos)
             ->with('marcas', $marcas)
             ->with('proveedores', $proveedores);
     }
-    public function update(Request $request,$id){
-        //dd($request);
-        $equipo =Equipo::find($id);
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'id_modelo' => 'required|exists:modelos,id',
+            'id_marca' => 'required|exists:marcas,id',
+            'id_proveedor' => 'required|exists:proveedores,id',
+            'garantia' => 'nullable|string|max:255',
+            'cantidad' => 'required|integer|min:1',
+            'fecha_recepcion' => 'required|date',
+            'orden_compra' => 'nullable|string|max:255',
+        ]);
+        $equipo = Equipo::find($id);
+        if (!$equipo) {
+            return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
+        }
         $equipo->id_modelo = $request->id_modelo;
         $equipo->id_marca = $request->id_marca;
         $equipo->id_proveedor = $request->id_proveedor;
-        $equipo->garantia = $request->garantia;     
+        $equipo->garantia = $request->garantia;
+        $equipo->cantidad = $request->cantidad;
         $equipo->fecha_recepcion = $request->fecha_recepcion;
         $equipo->orden_compra = $request->orden_compra;
         $equipo->save();
-        return redirect()->route('equipo.index')->with('success','¡Editado Satisfactoriamente!');
+        return redirect()->route('equipo.index')->with('success', '¡Editado Satisfactoriamente!');
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $equipo = Equipo::find($id);
-        if($equipo->estado == 1){
+        if (!$equipo) {
+            return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
+        }
+        if ($equipo->estado == 1) {
             $equipo->estado = 0;
             $mensaje = "¡Eliminado Satisfactoriamente!";
-        }
-        else{
+        } else {
             $equipo->estado = 1;
             $mensaje = "¡Restaurado Satisfactoriamente!";
         }
         $equipo->save();
-        return redirect()->route('equipo.index')->with('success',$mensaje);
+        return redirect()->route('equipo.index')->with('success', $mensaje);
     }
-    public function grafico(){
+    public function grafico()
+    {
         $coleccion = DB::select(
             "SELECT mo.nombre_comercial as Modelo, SUM(eq.cantidad) AS Cantidad 
                 FROM equipo eq,tipo_equipo te, modelo mo 
                 WHERE eq.id_tipo_equipo=te.id AND eq.id_modelo=mo.id AND eq.id_tipo_equipo=2 
                 GROUP BY mo.nombre_comercial 
                 ORDER BY Cantidad DESC;"
-                );
+        );
         $datos = [];
-        foreach($coleccion as $fila){
-            $item = [$fila->Modelo.' ('.$fila->Cantidad.')',$fila->Cantidad];
-            array_push($datos,$item);
+        foreach ($coleccion as $fila) {
+            $item = [$fila->Modelo . ' (' . $fila->Cantidad . ')', $fila->Cantidad];
+            array_push($datos, $item);
         }
-        return view('admin/equipo/grafico')->with('datos',$datos);
+        return view('admin/equipo/grafico')->with('datos', $datos);
     }
-        
 }

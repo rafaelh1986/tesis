@@ -14,14 +14,14 @@ class Equipo extends Model
     protected $fillable = ['id_modelo','id_marca','id_proveedor','garantia','cantidad',
     'fecha_recepcion','orden_compra','estado','created_at','updated_at'];
 
-    public function modelo(){
-        return $this->hasOne('App\Models\Modelo','id','id_modelo');
+    public function modelo() {
+        return $this->belongsTo(Modelo::class, 'id_modelo');
     }
-    public function marca(){
-        return $this->hasOne('App\Models\Marca','id','id_marca');
+    public function marca() {
+        return $this->belongsTo(Marca::class, 'id_marca');
     }
-    public function proveedor(){
-        return $this->hasOne('App\Models\Proveedor','id','id_proveedor');
+    public function proveedor() {
+        return $this->belongsTo(Proveedor::class, 'id_proveedor');
     }
     
 };

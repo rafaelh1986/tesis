@@ -28,7 +28,9 @@ class AreaController extends Controller
         return view('admin/area/create');
     }
     public function store(Request $request){
-        //dd($request);
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
         $area_nombre = $request->nombre;
         if($this->verficarItemExistente($area_nombre)==false){
             $area = new Area();
@@ -41,14 +43,12 @@ class AreaController extends Controller
         return redirect()->route('area.create')->with('error','¡Ya existe!');
         
     }
-    public function verficarItemExistente($area_nombre){
-        $areas = Area::where('estado',1)->get();
-        foreach($areas as $detalle){
-            if($detalle->nombre == $area_nombre){
-                return true;
-            }
+    public function verficarItemExistente($area_nombre, $exclude_id = null){
+        $query = Area::where('estado',1)->where('nombre', $area_nombre);
+        if ($exclude_id) {
+            $query->where('id', '!=', $exclude_id);
         }
-        return false;
+        return $query->exists();
     }
     public function show($id){
         $area = Area::find($id);
@@ -59,15 +59,16 @@ class AreaController extends Controller
         return view('admin/area/edit')->with('area',$area);
     }
     public function update(Request $request,$id){
-        //dd($request);
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
         $area = Area::find($id);
         $area->nombre = $request->nombre;
 
-        if($this->verficarItemExistente($area->nombre)==false){
+        if($this->verficarItemExistente($area->nombre, $area->id)==false){
             $area->save();
             return redirect()->route('area.index')->with('success','¡Editado Satisfactoriamente!');
         }
-
         return redirect()->route('area.edit',$id)->with('error','¡Ya existe!');
     }
     public function destroy($id){

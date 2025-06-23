@@ -55,10 +55,15 @@
                     <td>
                         <b>Estado</b>
                     </td>
-                    <td>@if($inventario->estado==0)
-                            <label for=""style="color:brown">Inactivo</label>
+                    <td>
+                        @if($inventario->estado==2)
+                            <label style="color:blue">Asignado</label>
+                        @elseif($inventario->estado==1)
+                            <label style="color:green">Disponible</label>
+                        @elseif($inventario->estado==3)
+                            <label style="color:orange">No disponible</label>
                         @else
-                            <label for="">Activo</label>
+                            <label style="color:red">Baja</label>
                         @endif
                     </td>
                 </tr>

@@ -15,7 +15,7 @@ class Inventario extends Model
     protected $fillable = ['id_equipo','numero_serie','codigo_activo_fijo','estado','created_at','updated_at'];
 
     public function equipo(){
-        return $this->hasOne('App\Models\Equipo','id','id_equipo');
+        return $this->belongsTo('App\Models\Equipo','id_equipo');
     }
     
 };

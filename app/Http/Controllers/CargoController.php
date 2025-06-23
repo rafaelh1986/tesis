@@ -28,10 +28,11 @@ class CargoController extends Controller
         return view('admin/cargo/create');
     }
     public function store(Request $request){
-        //dd($request);
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
         $cargo = new Cargo();
         $cargo->nombre = $request->nombre;
-        //dd($cargo);
         $cargo->save();
         return redirect()->route('cargo.index')->with('success','¡Creado Satisfactoriamente!');
     }
@@ -44,14 +45,23 @@ class CargoController extends Controller
         return view('admin/cargo/edit')->with('cargo',$cargo);
     }
     public function update(Request $request,$id){
-        //dd($request);
+        $request->validate([
+            'nombre' => 'required|string|max:255',
+        ]);
+        // Verificar si el cargo ya existe
         $cargo = Cargo::find($id);
+        if (!$cargo) {
+            return redirect()->route('cargo.index')->with('error', 'Cargo no encontrado.');
+        }
         $cargo->nombre = $request->nombre;
         $cargo->save();
         return redirect()->route('cargo.index')->with('success','¡Editado Satisfactoriamente!');
     }
     public function destroy($id){
         $cargo = Cargo::find($id);
+        if (!$cargo) {
+            return redirect()->route('cargo.index')->with('error', 'Cargo no encontrado.');
+        }
         if($cargo->estado == 1){
             $cargo->estado = 0;
             $mensaje = "¡Eliminado Satisfactoriamente!";

@@ -41,8 +41,13 @@ class BajaInventarioController extends Controller
         $bajainventario->id_motivo_baja = $request->id_motivo_baja;
         $bajainventario->fecha = $request->fecha;
         $bajainventario->gestion = $request->gestion;
-                
         $bajainventario->save();
+        // Cambiar el estado del inventario a 0 (baja)
+        $inventario = Inventario::find($request->id_inventario);
+        if ($inventario) {
+            $inventario->estado = 0;
+            $inventario->save();
+        }
         return redirect()->route('bajainventario.index')->with('success','¡Creado Satisfactoriamente!');
     }
     public function show($id){
@@ -66,13 +71,24 @@ class BajaInventarioController extends Controller
     }
     public function destroy($id){
         $bajainventario = BajaInventario::find($id);
+        $inventario = Inventario::find($bajainventario->id_inventario);
         if($bajainventario->estado == 1){
             $bajainventario->estado = 0;
             $mensaje = "¡Eliminado Satisfactoriamente!";
+            // Cambiar inventario a disponible
+            if ($inventario) {
+                $inventario->estado = 1;
+                $inventario->save();
+            }
         }
         else{
             $bajainventario->estado = 1;
             $mensaje = "Restaurado Satisfactoriamente!";
+            // Cambiar inventario a baja
+            if ($inventario) {
+                $inventario->estado = 0;
+                $inventario->save();
+            }
         }
         $bajainventario->save();
         return redirect()->route('bajainventario.index')->with('success',$mensaje);

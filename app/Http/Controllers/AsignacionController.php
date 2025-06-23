@@ -37,7 +37,10 @@ class AsignacionController extends Controller
         return view('admin/asignacion/create')->with('empleados',$empleados);
     }
     public function store(Request $request){
-        //dd($request);
+        $request->validate([
+            'id_empleado' => 'required|exists:empleados,id',
+            'fecha_asignacion' => 'required|date',
+        ]);
         $asignacion = new Asignacion();
         $asignacion->id_empleado = $request->id_empleado;
         $asignacion->fecha_asignacion = $request->fecha_asignacion;
@@ -47,12 +50,14 @@ class AsignacionController extends Controller
         return redirect()->route('asignacion.edit',$asignacion->id)->with('success','¡Creado Satisfactoriamente!');
     }
     public function storeDetalle(Request $request){
-        //dd($request);
+        $request->validate([
+            'id_inventario' => 'required|exists:inventarios,id',
+            'id_asignacion' => 'required|exists:asignacions,id',
+        ]);
         $detalle = new DetalleAsignacion();
         $id_inventario = $request->id_inventario;
         $id_asignacion = $request->id_asignacion;
         if($this->verificarItemExistenteEnAsignacion($id_inventario, $id_asignacion)==false){
-            //dd($id_inventario,$id_asignacion);
             $detalle->id_inventario = $request->id_inventario;
             $detalle->id_asignacion = $request->id_asignacion;
             $detalle->estado = 1;
@@ -63,8 +68,7 @@ class AsignacionController extends Controller
                 $inventario->estado = 2;
                 $inventario->save();
             }
-        }
-        
+        }        
         return redirect()->route('asignacion.edit',$request->id_asignacion);
     }
 
@@ -78,11 +82,17 @@ class AsignacionController extends Controller
 
     public function show($id){
         $asignacion = Asignacion::find($id);
+        if (!$asignacion) {
+            return redirect()->route('asignacion.index')->with('error', 'Asignación no encontrada.');
+        }
         
         return view('admin/asignacion/show')->with('asignacion',$asignacion);
     }
     public function edit($id){
         $asignacion = Asignacion::find($id);
+        if (!$asignacion) {
+            return redirect()->route('asignacion.index')->with('error', 'Asignación no encontrada.');
+        }
         $inventarios = Inventario::where('estado',1)->get();
         $detalleAsignaciones = DetalleAsignacion::where('id_asignacion',$id)->where('estado',1)->get();
         return view('admin/asignacion/edit')->with('asignacion',$asignacion)
@@ -91,24 +101,12 @@ class AsignacionController extends Controller
     public function update(Request $request,$id){
         //dd($request);
         $asignacion = Asignacion::find($id);
-        //dd($asignacion);
+        if (!$asignacion) {
+            return redirect()->route('asignacion.index')->with('error', 'Asignación no encontrada.');
+        }
         $asignacion->estado = 1;
         $asignacion->save();
-        //detalle confirmar.
-        /*foreach($asignacion->detalleAsignaciones as $detalle){
-            if($detalle->estado==2){
-                $detalleAsignacion = DetalleAsignacion::find($detalle->id);
-                
-                $detalleAsignacion->estado =1;
-                $detalleAsignacion->save();
-                
-                $detalleAsignacion->inventario->estado=1;
-                $detalleAsignacion->inventario->save();
-
-            }
-            
-
-        }*/
+        
         return redirect()->route('asignacion.index')->with('success','¡Editado Satisfactoriamente!');
     }
 
@@ -116,6 +114,9 @@ class AsignacionController extends Controller
     public function destroy($id)
     {
         $asignacion = Asignacion::find($id);
+        if (!$asignacion) {
+            return redirect()->route('asignacion.index')->with('error', 'Asignación no encontrada.');
+        }
 
         // Cambiar estado de los detalles y de los inventarios asociados
         foreach ($asignacion->detalleAsignaciones as $detalle) {
@@ -155,6 +156,9 @@ class AsignacionController extends Controller
     public function cancelar($id)
     {
         $asignacion = Asignacion::find($id);
+        if (!$asignacion) {
+            return redirect()->route('asignacion.index')->with('error', 'Asignación no encontrada.');
+        }
 
         foreach ($asignacion->detalleAsignaciones as $detalle) {
             if ($detalle->estado == 1) { // Solo si está asignado
@@ -178,7 +182,7 @@ class AsignacionController extends Controller
     public function notaAsignacion($id){
         
         $asignacion = Asignacion::find($id);
-        $detalleAsignaciones = DetalleAsignacion::where('id_asignacion',$id)->where('estado',2)->get();
+        $detalleAsignaciones = DetalleAsignacion::where('id_asignacion',$id)->where('estado',1)->get();
         //dd($detalleAsignaciones);
         $pdf = Pdf::loadView('admin.asignacion.nota_asignacion',compact('asignacion','detalleAsignaciones'));
         return $pdf->download('notaAsignacion.pdf');
@@ -188,7 +192,10 @@ class AsignacionController extends Controller
     public function notaAsignacionPDF($id){
         
         $asignacion = Asignacion::find($id);
-        $detalleAsignaciones = DetalleAsignacion::where('id_asignacion',$id)->where('estado',2)->get();
+        if (!$asignacion) {
+            return redirect()->route('asignacion.index')->with('error', 'Asignación no encontrada.');
+        }
+        $detalleAsignaciones = DetalleAsignacion::where('id_asignacion',$id)->where('estado',1)->get();
         $pdf = Pdf::loadView('admin.asignacion.nota_asignacion',compact('asignacion','detalleAsignaciones'));
         return $pdf->download('notaAsignacion.pdf');
         //return view ('admin.asignacion.nota_asignacion',compact('asignacion','detalleAsignaciones'));

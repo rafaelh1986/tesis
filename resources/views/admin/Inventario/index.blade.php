@@ -20,6 +20,7 @@
                 <td><b>Equipo</b></td>
                 <td><b>Número de serie</b></td>
                 <td><b>Código de AF</b></td>
+                <td><b>Estado</b></td>
                 <td><b>Opciones</b></td>
             </tr>
         </thead>
@@ -35,6 +36,17 @@
                     </td>
                     <td>{{$inventario->numero_serie}}</td>
                     <td>{{$inventario->codigo_activo_fijo}}</td>
+                    <td>
+                        @if($inventario->estado==2)
+                            <label style="color:blue">Asignado</label>
+                        @elseif($inventario->estado==1)
+                            <label style="color:green">Disponible</label>
+                        @elseif($inventario->estado==3)
+                            <label style="color:orange">No disponible</label>
+                        @else
+                            <label style="color:red">Baja</label>
+                        @endif
+                    </td>
                     <td>
                         <a href="{{route('inventario.show' , $inventario->id)}}"
                             class="btn btn-sm btn-primary">
@@ -58,10 +70,12 @@
                                 $msj = "eliminar";
                             }
                         @endphp
-                        <a href="{{route('inventario.destroy' , $inventario->id)}}" 
-                            class="btn btn-sm btn-{{$bg_btn}}" onclick="return confirm('¿Estas seguro?')">
-                            <i class="fas fa-{{$icono_delete}}"></i>
-                        </a>
+                        @if($inventario->estado == 1)
+                            <a href="{{route('inventario.destroy' , $inventario->id)}}"
+                                class="btn btn-sm btn-{{$bg_btn}}" onclick="return confirm('¿Estas seguro de {{$msj}} este inventario?')">
+                                <i class="fas fa-{{$icono_delete}}"></i>
+                            </a>
+                        @endif
                     </td>
                 </tr>
                 

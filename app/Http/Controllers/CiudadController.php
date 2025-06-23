@@ -28,7 +28,9 @@ class CiudadController extends Controller
         return view('admin/ciudad/create');
     }
     public function store(Request $request){
-        //dd($request);
+        $request->validate([
+            'nombre' => 'required|string|max:255|unique:ciudads,nombre',
+        ]);
         $ciudad = new Ciudad();
         $ciudad->nombre = $request->nombre;
         //dd($ciudad);
@@ -44,14 +46,23 @@ class CiudadController extends Controller
         return view('admin/ciudad/edit')->with('ciudad',$ciudad);
     }
     public function update(Request $request,$id){
-        //dd($request);
+        $request->validate([
+            'nombre' => 'required|string|max:255|unique:ciudads,nombre,' . $id,
+        ]);
+        // Verificar si la ciudad ya existe
         $ciudad = Ciudad::find($id);
+        if (!$ciudad) {
+            return redirect()->route('ciudad.index')->with('error', 'Ciudad no encontrada.');
+        }
         $ciudad->nombre = $request->nombre;
         $ciudad->save();
         return redirect()->route('ciudad.index')->with('success','¡Editado Satisfactoriamente!');
     }
     public function destroy($id){
         $ciudad = Ciudad::find($id);
+        if (!$ciudad) {
+            return redirect()->route('ciudad.index')->with('error', 'Ciudad no encontrada.');
+        }
         if($ciudad->estado == 1){
             $ciudad->estado = 0;
             $mensaje = "¡Eliminado Satisfactoriamente!";

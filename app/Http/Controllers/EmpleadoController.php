@@ -39,6 +39,16 @@ class EmpleadoController extends Controller
             ->with('ciudades',$ciudades)->with('cargos',$cargos);
     }
     public function store(Request $request){
+        $request->validate([
+            'id_persona' => 'required|exists:personas,id',
+            'id_area' => 'required|exists:areas,id',
+            'id_ciudad' => 'required|exists:ciudads,id',
+            'id_cargo' => 'required|exists:cargos,id',
+            'email' => 'required|email|max:255',
+            'telefono_interno' => 'nullable|string|max:50',
+            'fecha_ingreso' => 'required|date',
+            'fecha_salida' => 'nullable|date',
+        ]);
         //dd($request);
         $empleado = new Empleado();
         $empleado->id_persona = $request->id_persona;
@@ -60,14 +70,21 @@ class EmpleadoController extends Controller
     }
     public function show($id){
         $empleado = Empleado::find($id);
-        $area = Area::find($id);
-        $ciudad = Ciudad::find($id);
-        $cargo = Cargo::find($id);
-        return view('admin/empleado/show')->with('empleado',$empleado)->with('area',$area)
-            ->with('ciudad',$ciudad)->with('cargo',$cargo);
+        if (!$empleado) {
+            return redirect()->route('empleado.index')->with('error', 'Empleado no encontrado.');
+        }
+        // Usando relaciones definidas en el modelo Empleado
+        return view('admin/empleado/show')
+            ->with('empleado', $empleado)
+            ->with('area', $empleado->area)
+            ->with('ciudad', $empleado->ciudad)
+            ->with('cargo', $empleado->cargo);
     }
     public function edit($id){
         $empleado = Empleado::find($id);
+        if (!$empleado) {
+            return redirect()->route('empleado.index')->with('error', 'Empleado no encontrado.');
+        }
         $areas = Area::where('estado',1)->get();
         $ciudades = Ciudad::where('estado',1)->get();
         $cargos = Cargo::where('estado',1)->get();
@@ -79,9 +96,21 @@ class EmpleadoController extends Controller
         ->with('cargos', $cargos);
     }
     public function update(Request $request,$id){
-        //dd($request);
+        $request->validate([
+            'id_persona' => 'required|exists:personas,id',
+            'id_area' => 'required|exists:areas,id',
+            'id_ciudad' => 'required|exists:ciudads,id',
+            'id_cargo' => 'required|exists:cargos,id',
+            'email' => 'required|email|max:255',
+            'telefono_interno' => 'nullable|string|max:50',
+            'fecha_ingreso' => 'required|date',
+            'fecha_salida' => 'nullable|date',
+        ]);
         $empleado = Empleado::find($id);
-        
+        if (!$empleado) {
+            return redirect()->route('empleado.index')->with('error', 'Empleado no encontrado.');
+        }
+                
         $empleado->id_area = $request->id_area;
         $empleado->id_ciudad = $request->id_ciudad;
         $empleado->id_cargo = $request->id_cargo;
@@ -94,6 +123,10 @@ class EmpleadoController extends Controller
     }
     public function destroy($id){
         $empleado = Empleado::find($id);
+        if (!$empleado) {
+            return redirect()->route('empleado.index')->with('error', 'Empleado no encontrado.');
+        }
+        
         if($empleado->estado == 1){
             $empleado->estado = 0;
             $mensaje = "¡Eliminado Satisfactoriamente!";
