@@ -17,18 +17,18 @@
         @method('PUT')
         <div class="row">
             <div class="col-md-3">
-                <label for="">Ci</label>
-                <input type="" name="ci" id="" class="form-control" 
-                    value="{{$persona->ci}}" required>
+                <label for="ci">Ci</label>
+                <input type="text" name="ci" id="ci" class="form-control" 
+                    value="{{$persona->ci}}" readonly >
             </div>
             <div class="col-md-3">
-                <label for="">Nombres</label>
-                <input type="text" name="nombres" id="" class="form-control" 
+                <label for="nombres">Nombres</label>
+                <input type="text" name="nombres" id="nombres" class="form-control" 
                     value="{{$persona->nombres}}">
             </div>
             <div class="col-md-3">
-                <label for="">Apellidos</label>
-                <input type="text" name="apellidos" id="" class="form-control" 
+                <label for="apellidos">Apellidos</label>
+                <input type="text" name="apellidos" id="apellidos" class="form-control" 
                     value="{{$persona->apellidos}}">
             </div>
             

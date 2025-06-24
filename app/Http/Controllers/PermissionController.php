@@ -19,50 +19,70 @@ class PermissionController extends Controller
         $this->middleware(['permission:permiso.show'])->only('show');
     }
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         //dd($request);
-        $permisos =Permission::paginate(7);
-        return view('admin/permiso/index')->with('permisos',$permisos);
+        $permisos = Permission::paginate(7);
+        return view('admin/permiso/index')->with('permisos', $permisos);
     }
-    public function create(){
-        
+    public function create()
+    {
+
         return view('admin/permiso/create');
     }
-    public function store(Request $request){
-        //dd($request);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:permissions,name',
+        ]);
         $permiso = new Permission();
-        
+
         $permiso->name = $request->name;
         //dd($permiso);
         $permiso->save();
-        return redirect()->route('permiso.index')->with('success','¡Creado Satisfactoriamente!');
+        return redirect()->route('permiso.index')->with('success', '¡Creado Satisfactoriamente!');
     }
-    public function show($id){
+    public function show($id)
+    {
         $permiso = Permission::find($id);
-        return view('admin/permiso/show')->with('permiso',$permiso);
+        if (!$permiso) {
+            return redirect()->route('permiso.index')->with('error', 'Permiso no encontrado.');
+        }
+        return view('admin/permiso/show')->with('permiso', $permiso);
     }
-    public function edit($id){
+    public function edit($id)
+    {
         $permiso = Permission::find($id);
-        return view('admin/permiso/edit')->with('permiso',$permiso);
+        if (!$permiso) {
+            return redirect()->route('permiso.index')->with('error', 'Permiso no encontrado.');
+        }
+        return view('admin/permiso/edit')->with('permiso', $permiso);
     }
-    public function update(Request $request,$id){
-        //dd($request);
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255|unique:permissions,name,' . $id,
+        ]);
         $permiso = Permission::find($id);
         $permiso->name = $request->name;
         $permiso->save();
-        return redirect()->route('permiso.index')->with('success','¡Editado Satisfactoriamente!');
+        return redirect()->route('permiso.index')->with('success', '¡Editado Satisfactoriamente!');
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $permiso = Permission::find($id);
-        if($permiso->estado == 1){
+        if (!$permiso) {
+            return redirect()->route('permiso.index')->with('error', 'Permiso no encontrado.');
+        }
+        $permiso = Permission::find($id);
+        if ($permiso->estado == 1) {
             $permiso->estado = 0;
             $mensaje = "¡Eliminado Satisfactoriamente!";
-        }
-        else{
+        } else {
             $permiso->estado = 1;
             $mensaje = "¡Restaurado Satisfactoriamente!";
         }
         $permiso->save();
-        return redirect()->route('permiso.index')->with('success',$mensaje);
+        return redirect()->route('permiso.index')->with('success', $mensaje);
     }
 }

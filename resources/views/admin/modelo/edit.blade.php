@@ -36,13 +36,13 @@
             </select>
         </div>
         <div class="col-md-3">
-            <label for="">Nombre comercial</label>
-            <input type="text" name="nombre_comercial" id="" class="form-control"
+            <label for="nombre_comercial">Nombre comercial</label>
+            <input type="text" name="nombre_comercial" id="nombre_comercial" class="form-control"
                 value="{{$modelo->nombre_comercial}}">
         </div>
         <div class="col-md-3">
-            <label for="">Nombre técnico</label>
-            <input type="text" name="nombre_tecnico" id="" class="form-control"
+            <label for="nombre_tecnico">Nombre técnico</label>
+            <input type="text" name="nombre_tecnico" id="nombre_tecnico" class="form-control"
                 value="{{$modelo->nombre_tecnico}}">
         </div>
         <div class="col-md-3">

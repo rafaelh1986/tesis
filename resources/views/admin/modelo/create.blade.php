@@ -26,8 +26,8 @@
     @method('POST')
     <div class="row">
         <div class="col-md-3">
-            <label for="">Tipo de equipo</label>
-            <select name="id_tipo_equipo" id="tipo_equipo" class="form-control" required>
+            <label for="id_tipo_equipo">Tipo de equipo</label>
+            <select name="id_tipo_equipo" id="id_tipo_equipo" class="form-control" required>
                 <option value="">Seleccionar</option>
                 @foreach($tipo_equipos as $tipo_equipo)
                 <option value="{{$tipo_equipo->id}}">{{$tipo_equipo->nombre}}</option>
@@ -35,12 +35,12 @@
             </select>
         </div>
         <div class="col-md-3">
-            <label for="">Nombre comercial</label>
-            <input type="text" name="nombre_comercial" id="" class="form-control" required>
+            <label for="nombre_comercial">Nombre comercial</label>
+            <input type="text" name="nombre_comercial" id="nombre_comercial" class="form-control" required>
         </div>
         <div class="col-md-3">
-            <label for="">Nombre técnico</label>
-            <input type="text" name="nombre_tecnico" id="" class="form-control" required>
+            <label for="nombre_tecnico">Nombre técnico</label>
+            <input type="text" name="nombre_tecnico" id="nombre_tecnico" class="form-control" required>
         </div>
         <div class="col-md-3">
             <input type="submit" value="Guardar" class="btn btn-success btn-block mt-4">

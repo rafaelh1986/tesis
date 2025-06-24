@@ -27,27 +27,45 @@ class ProveedorController extends Controller
         return view('admin/proveedor/create');
     }
     public function store(Request $request){
-        //dd($request);
+        $request->validate([
+        'razon_social' => 'required|string|max:255',
+        'nit' => 'required|string|max:50|unique:proveedor,nit',
+        'telefono' => 'required|string|max:50',
+        'email' => 'required|email|max:255|unique:proveedor,email',
+    ]);
         $proveedor = new Proveedor();
         $proveedor->razon_social = $request->razon_social;
         $proveedor->nit = $request->nit;
         $proveedor->telefono = $request->telefono;
         $proveedor->email = $request->email;
-        //dd($persona);
         $proveedor->save();
         return redirect()->route('proveedor.index')->with('success','¡Creado Satisfactoriamente!');
     }
     public function show($id){
         $proveedor = Proveedor::find($id);
+        if (!$proveedor) {
+        return redirect()->route('proveedor.index')->with('error', 'Proveedor no encontrado.');
+    }
         return view('admin/proveedor/show')->with('proveedor',$proveedor);
     }
     public function edit($id){
         $proveedor = Proveedor::find($id);
+        if (!$proveedor) {
+            return redirect()->route('proveedor.index')->with('error', 'Proveedor no encontrado.');
+        }
         return view('admin/proveedor/edit')->with('proveedor',$proveedor);
     }
     public function update(Request $request,$id){
-        //dd($request);
+        $request->validate([
+            'razon_social' => 'required|string|max:255',
+            'nit' => 'required|string|max:50|unique:proveedor,nit,'.$id,
+            'telefono' => 'required|string|max:50',
+            'email' => 'required|email|max:255|unique:proveedor,email,'.$id,
+        ]);
         $proveedor = Proveedor::find($id);
+        if (!$proveedor) {
+        return redirect()->route('proveedor.index')->with('error', 'Proveedor no encontrado.');
+    }
         $proveedor->razon_social = $request->razon_social;
         $proveedor->nit = $request->nit;
         $proveedor->telefono = $request->telefono;
@@ -57,6 +75,9 @@ class ProveedorController extends Controller
     }
     public function destroy($id){
         $proveedor = Proveedor::find($id);
+        if (!$proveedor) {
+        return redirect()->route('proveedor.index')->with('error', 'Proveedor no encontrado.');
+    }
         if($proveedor->estado == 1){
             $proveedor->estado = 0;
             $mensaje = "¡Eliminado Satisfactoriamente!";

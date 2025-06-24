@@ -13,16 +13,12 @@ class SalidaRevision extends Model
     protected $table = "salida_revision";
     protected $fillable = ['id_proveedor','id_inventario','descripcion','fecha_salida','descripcion',
         'fecha_retorno','observaciones','estado','created_at','updated_at'];
-
-    public function tipo_equipo(){
-        return $this->hasOne('App\Models\TipoEquipo','id','id_tipo_equipo');
-    }
-    
+ 
     public function proveedor(){
-        return $this->hasOne('App\Models\Proveedor','id','id_proveedor');
+        return $this->belongsTo('App\Models\Proveedor','id_proveedor','id');
     }
     public function inventario(){
-        return $this->hasOne('App\Models\Inventario','id','id_inventario');
+        return $this->belongsTo('App\Models\Inventario','id_inventario','id');
     }
     
 };
