@@ -39,9 +39,9 @@
                         <b>Estado</b>
                     </td>
                     <td>@if($area->estado==0)
-                            <label for=""style="color:brown">Inactivo</label>
+                            <label for="estado"style="color:brown">Inactivo</label>
                         @else
-                            <label for="">Activo</label>
+                            <label for="estado">Activo</label>
                         @endif
                     </td>
                 </tr>

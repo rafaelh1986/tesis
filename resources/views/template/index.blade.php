@@ -237,7 +237,7 @@
                 Gráficos
             </div>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="{{route('salida_revision.index')}}"
+                <a class="nav-link collapsed" href="{{route('equipo.grafico')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Cantidad de laptops</span>

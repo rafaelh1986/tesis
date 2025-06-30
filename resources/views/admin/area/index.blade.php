@@ -2,7 +2,7 @@
 @section('encabezado')
 <div class="row">
     <div class="col-md-9">
-        <h4 class="m-0 font-weight-bold text-primary">Area</h4>
+        <h4 class="m-0 font-weight-bold text-primary">Área</h4>
     </div>
     <div class="col-md-3">
         <a href="{{route('area.create')}}" class="btn btn-sm btn-info btn-block">

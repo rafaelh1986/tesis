@@ -43,9 +43,9 @@ class EquipoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_modelo' => 'required|exists:modelos,id',
-            'id_marca' => 'required|exists:marcas,id',
-            'id_proveedor' => 'required|exists:proveedores,id',
+            'id_modelo' => 'required|exists:modelo,id',
+            'id_marca' => 'required|exists:marca,id',
+            'id_proveedor' => 'required|exists:proveedor,id',
             'garantia' => 'nullable|string|max:255',
             'cantidad' => 'required|integer|min:1',
             'fecha_recepcion' => 'required|date',
@@ -94,9 +94,9 @@ class EquipoController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'id_modelo' => 'required|exists:modelos,id',
-            'id_marca' => 'required|exists:marcas,id',
-            'id_proveedor' => 'required|exists:proveedores,id',
+            'id_modelo' => 'required|exists:modelo,id',
+            'id_marca' => 'required|exists:marca,id',
+            'id_proveedor' => 'required|exists:proveedor,id',
             'garantia' => 'nullable|string|max:255',
             'cantidad' => 'required|integer|min:1',
             'fecha_recepcion' => 'required|date',
@@ -135,15 +135,15 @@ class EquipoController extends Controller
     public function grafico()
     {
         $coleccion = DB::select(
-            "SELECT mo.nombre_comercial as Modelo, SUM(eq.cantidad) AS Cantidad 
-                FROM equipo eq,tipo_equipo te, modelo mo 
-                WHERE eq.id_tipo_equipo=te.id AND eq.id_modelo=mo.id AND eq.id_tipo_equipo=2 
-                GROUP BY mo.nombre_comercial 
-                ORDER BY Cantidad DESC;"
+            "SELECT teq.nombre AS 'Tipo de equipo', mo.nombre_comercial AS Modelo, SUM(eq.cantidad) AS Cantidad
+            FROM equipo eq, tipo_equipo teq, modelo mo
+            WHERE mo.id_tipo_equipo=teq.id AND eq.id_modelo=mo.id AND mo.id_tipo_equipo=1
+            GROUP BY teq.nombre, mo.nombre_comercial
+            ORDER BY Cantidad DESC;"
         );
         $datos = [];
         foreach ($coleccion as $fila) {
-            $item = [$fila->Modelo . ' (' . $fila->Cantidad . ')', $fila->Cantidad];
+            $item = [$fila->Modelo . ' (' . $fila->Cantidad . ')', (int)$fila->Cantidad];
             array_push($datos, $item);
         }
         return view('admin/equipo/grafico')->with('datos', $datos);

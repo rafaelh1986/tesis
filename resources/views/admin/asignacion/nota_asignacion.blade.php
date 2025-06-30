@@ -23,7 +23,8 @@
 <body>
     <div style="margin-bottom: 24px">
         <label style="text-align:center; width:200px">
-            <img src="{{asset('img/logo.png')}}" alt="" srcset="">
+            <!--<img src="{{asset('img/logo.png')}}" alt="" srcset="">-->
+            <img src="{{ public_path('img/logo.png') }}" alt="" style="width:80px;">
             <b style="font-size: 28px;">YANBAL</b>
         </label>
         
@@ -54,7 +55,7 @@
                     
                     @foreach($detalleAsignaciones as $detalleAsignacion)
                     <tr>
-                        <td>{{$detalleAsignacion->inventario->equipo->tipo_equipo->nombre}}</td>
+                        <td>{{$detalleAsignacion->inventario->equipo->modelo->tipo_equipo->nombre}}</td>
                         <td>{{$detalleAsignacion->inventario->equipo->modelo->nombre_comercial}}</td>
                         <td>{{$detalleAsignacion->inventario->numero_serie}}</td>
                         

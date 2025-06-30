@@ -12,13 +12,13 @@ class DetalleAsignacion extends Model
     use HasFactory, HasRoles;
     
     protected $table = "detalle_asignacion";
-    protected $fillable = ['id_asignacon','id_inventario','estado','created_at','updated_at'];
+    protected $fillable = ['id_asignacion','id_inventario','estado','created_at','updated_at'];
 
     public function asignacion(){
-        return $this->hasOne('App\Models\Asignacion','id','id_asignacion');
+        return $this->belongsTo('App\Models\Asignacion','id_asignacion');
     }
     public function inventario(){
-        return $this->hasOne('App\Models\Inventario','id','id_inventario');
+        return $this->belongsTo('App\Models\Inventario','id_inventario');
     }
    
 };
