@@ -37,9 +37,9 @@ use App\Http\Controllers\BajaInventarioController;
 |
 */
 
-/*Route::get('/', function () {
+Route::get('/', function () {
     return view('inicio');
-});*/
+});
 
 Route::get('/dashboard', function () {
     return view('inicio');

@@ -267,7 +267,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
                     <div class="sidebar-brand-icon">
-                        <a href="/proyecto-app/public/">
+                        <a href="/">
                             <img src="{{asset('img/logo1.png')}}" alt="" srcset="">
                         </a>
                     </div>

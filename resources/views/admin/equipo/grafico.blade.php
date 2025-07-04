@@ -13,25 +13,36 @@
 @endsection
 @section('head')
 @if(count($datos))
+<style>
+    #piechart_3d {
+        width: 100%;
+        min-width: 300px;
+        height: 50vw;
+        max-height: 500px;
+        margin: auto;
+    }
+</style>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    google.charts.load("current", {
-        packages: ["corechart"]
-    });
+    google.charts.load("current", { packages: ["corechart"] });
     google.charts.setOnLoadCallback(drawChart);
 
+    var chart, data, options;
     function drawChart() {
         var coleccion = {!! json_encode(array_merge([['Modelo', 'Cantidad']], $datos)) !!};
-        var data = google.visualization.arrayToDataTable(coleccion);
+        data = google.visualization.arrayToDataTable(coleccion);
 
-        var options = {
+        options = {
             title: 'Cantidad de modelos de Laptops',
             is3D: true,
+            chartArea: { width: '90%', height: '80%' }
         };
 
-        var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+        chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
         chart.draw(data, options);
     }
+
+    window.addEventListener('resize', drawChart);
 </script>
 @else
 <div class="alert alert-warning">No hay datos para mostrar el gráfico.</div>
@@ -39,6 +50,5 @@
 @endsection
 @section('contenido')
 <h1>Equipos</h1>
-<div id="piechart_3d" style="width: 900px; height: 500px;"></div>
-
+<div id="piechart_3d"></div>
 @endsection
