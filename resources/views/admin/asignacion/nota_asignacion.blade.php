@@ -10,9 +10,6 @@
             color: #333;
             font-family:'Arial';
         }
-        table{
-            
-        }
         th,td{
             border: 1px solid #333;
             padding: 2px 8px;
@@ -23,9 +20,7 @@
 <body>
     <div style="margin-bottom: 24px">
         <label style="text-align:center; width:200px">
-            <!--<img src="{{asset('img/logo.png')}}" alt="" srcset="">-->
-            <img src="{{ public_path('img/logo.png') }}" alt="" style="width:80px;">
-            <b style="font-size: 28px;">YANBAL</b>
+            <img src="{{ public_path('img/logoy.png') }}" alt="" style="width:120px;">
         </label>
         
         <label style="float: right; font-size: 12px;" for=""><b>Fecha de asignación: </b>{{$asignacion->fecha_asignacion}}</label>
@@ -37,7 +32,7 @@
         <label for=""><b>Asignado a: </b>{{$asignacion->empleado->persona->nombres.' '.$asignacion->empleado->persona->apellidos}}</label>
         <label style="float: right" for=""><b>Nro de Asignación: </b>{{$asignacion->id}}</label>                                            
     </div>
-    <div><H1> Asignaciones</H1></div>
+    <div><h2> Asignaciones</h2></div>
     <br>
     <div class="row">
         <div class="col-md-12">

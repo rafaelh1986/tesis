@@ -12608,7 +12608,8 @@ footer.sticky-footer {
 
 footer.sticky-footer .copyright {
     line-height: 1;
-    font-size: .8rem
+    font-size: .8rem;
+    color: #fff !important; 
 }
 
 body.sidebar-toggled footer.sticky-footer {

@@ -19,7 +19,6 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\EquipoController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\AsignacionController;
-use App\Http\Controllers\DetalleAsignacionController;
 use App\Http\Controllers\SalidaRevisionController;
 use App\Http\Controllers\BajaInventarioController;
 
@@ -105,6 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::get('asignacion/{id}/destroyDetalle',[AsignacionController::class, 'destroyDetalle'])->name('asignacion.destroyDetalle');
 
     Route::get('asignacion/{id}/notaAsignacion',[AsignacionController::class, 'notaAsignacion'])->name('asignacion.notaAsignacion');
+    Route::get('asignacion/listado/asignaciones', [AsignacionController::class, 'listadoAsignaciones'])->name('asignacion.listado.asignaciones');
 
     Route::post('rol/permiso',[RoleController::class, 'permiso'])->name('rol.permiso');
     Route::post('usuario/asignar_roles',[UsuarioController::class, 'asignar_roles'])->name('usuario.asignar_roles');

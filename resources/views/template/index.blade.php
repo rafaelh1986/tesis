@@ -40,14 +40,14 @@
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}">
                 <div class="sidebar-brand-icon">
                     <img src="{{asset('img/logo.png')}}" alt="" srcset="">
-                    
+
                 </div>
 
-            </a>        
-            
+            </a>
+
             <!-- Divider -->
             <hr class="sidebar-divider">
-            
+
             <!-- Heading -->
             <div class="sidebar-heading">
                 Admin
@@ -60,7 +60,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user"></i>
                     <span>Usuario</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('roles.index')
@@ -69,7 +69,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-clipboard-list"></i>
                     <span>Roles</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('permiso.index')
@@ -78,7 +78,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-clipboard-check"></i>
                     <span>Permisos</span>
-                </a> 
+                </a>
             </li>
             @endcan
             <!-- Divider -->
@@ -88,18 +88,18 @@
             <div class="sidebar-heading">
                 Asignación
             </div>
-            
+
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('asignacion.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Asignación</span>
-                </a> 
+                </a>
             </li>
             @endcan
             <!-- Divider -->
             <hr class="sidebar-divider">
-            
+
             <!-- Heading -->
             <div class="sidebar-heading">
                 Gestión
@@ -110,7 +110,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Persona</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('empleado.index')
@@ -119,7 +119,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Empleado</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('ciudad.index')
@@ -128,7 +128,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Ciudad</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('area.index')
@@ -137,7 +137,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Area</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('cargo.index')
@@ -146,7 +146,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Cargo</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('marca.index')
@@ -155,7 +155,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Marca</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('modelo.index')
@@ -164,7 +164,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Modelo</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('equipo.index')
@@ -173,7 +173,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Equipo</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('tipo_equipo.index')
@@ -182,7 +182,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Tipo de equipo</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('inventario.index')
@@ -191,7 +191,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Inventario</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('baja_inventario.index')
@@ -200,7 +200,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Baja de inventario</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('motivo_baja.index')
@@ -209,7 +209,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Motivo de baja</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('proveedor.index')
@@ -218,7 +218,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Proveedor</span>
-                </a> 
+                </a>
             </li>
             @endcan
             @can('salida_revision.index')
@@ -227,7 +227,7 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Salida a revisión</span>
-                </a> 
+                </a>
             </li>
             @endcan
 
@@ -241,7 +241,20 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Cantidad de laptops</span>
-                </a> 
+                </a>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+            <!-- Divider -->
+            <div class="sidebar-heading">
+                Listado
+            </div>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{ route('asignacion.listado.asignaciones') }}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-list"></i>
+                    <span>Listado asignaciones</span>
+                </a>
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -267,25 +280,25 @@
                         <i class="fa fa-bars"></i>
                     </button>
                     <div class="sidebar-brand-icon">
-                        <a href="/">
+                        <a href="{{ url('/') }}">
                             <img src="{{asset('img/logo1.png')}}" alt="" srcset="">
                         </a>
                     </div>
-                    
+
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        
+
 
                         <!-- Nav Item - Alerts -->
                         <li class="nav-item dropdown no-arrow mx-1">
-                            
-                            
+
+
                         </li>
 
                         <!-- Nav Item - Messages -->
-                        
+
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -301,7 +314,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                
+
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -322,12 +335,12 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             @yield('encabezado')
-                            
+
                         </div>
                         @include('flash-message')
                         <div class="card-body">
                             @yield('contenido')
-                            
+
                         </div>
                     </div>
 
@@ -372,14 +385,14 @@
                 <div class="modal-body">¿Esta seguro de cerrar sesión?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <a href="{{route('logout')}}" class="btn btn-primary"
-                                    onclick="event.preventDefault();
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a href="{{route('logout')}}" class="btn btn-primary"
+                            onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Cerrar sesión') }}
-                            </a>
-                        </form>
+                            {{ __('Cerrar sesión') }}
+                        </a>
+                    </form>
                 </div>
             </div>
         </div>
