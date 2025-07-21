@@ -8,6 +8,8 @@ use App\Models\Asignacion;
 use App\Models\Empleado;
 use App\Models\DetalleAsignacion;
 use App\Models\Inventario;
+use App\Models\TipoEquipo;
+use App\Models\Equipo;
 
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -210,16 +212,47 @@ class AsignacionController extends Controller
         return $pdf->download('notaAsignacion.pdf');
         //return view ('admin.asignacion.nota_asignacion',compact('asignacion','detalleAsignaciones'));
     }
-    public function listadoAsignaciones()
+    public function listadoAsignaciones(Request $request)
     {
-        $detalles = DetalleAsignacion::with([
+        // Para los selects del filtro
+        $empleados = Empleado::with('persona')->where('estado', 1)->get();
+        $tipos_equipo = TipoEquipo::all();
+        $equipos = Equipo::with('modelo')->get();
+
+        $query = DetalleAsignacion::with([
             'asignacion.empleado.persona',
             'inventario.equipo.modelo.tipo_equipo'
-        ])
-            ->where('estado', 1)
-            ->get();
-           // dd($detalles);
-        // Puedes pasar los datos a una vista
-        return view('admin.asignacion.listado_asignaciones', compact('detalles'));
+        ])->where('detalle_asignacion.estado', 1);
+
+        if ($request->filled('empleado_id')) {
+            $query->whereHas('asignacion', function ($q) use ($request) {
+                $q->where('id_empleado', $request->empleado_id);
+            });
+        }
+        if ($request->filled('tipo_equipo_id')) {
+            $query->whereHas('inventario.equipo.modelo', function ($q) use ($request) {
+                $q->where('id_tipo_equipo', $request->tipo_equipo_id);
+            });
+        }
+        if ($request->filled('equipo_id')) {
+            $query->whereHas('inventario.equipo', function ($q) use ($request) {
+                $q->where('id', $request->equipo_id);
+            });
+        }
+        if ($request->filled('fecha_recepcion')) {
+            $query->whereHas('inventario.equipo', function ($q) use ($request) {
+                $q->whereDate('fecha_recepcion', $request->fecha_recepcion);
+            });
+        }
+        // Ordenar por nombre del empleado (persona)
+        $query->join('asignacion', 'detalle_asignacion.id_asignacion', '=', 'asignacion.id')
+            ->join('empleado', 'asignacion.id_empleado', '=', 'empleado.id')
+            ->join('persona', 'empleado.id_persona', '=', 'persona.id')
+            ->orderBy('persona.nombres')
+            ->select('detalle_asignacion.*');
+
+        $detalles = $query->get();
+
+        return view('admin.asignacion.listado_asignaciones', compact('detalles', 'empleados', 'tipos_equipo', 'equipos'));
     }
 }
