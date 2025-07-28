@@ -14,19 +14,19 @@
             <select name="empleado_id" class="form-control">
                 <option value="">-- Todos los empleados --</option>
                 @foreach($empleados as $empleado)
-                    <option value="{{ $empleado->id }}" {{ request('empleado_id') == $empleado->id ? 'selected' : '' }}>
-                        {{ $empleado->persona->nombres }} {{ $empleado->persona->apellidos }}
-                    </option>
+                <option value="{{ $empleado->id }}" {{ request('empleado_id') == $empleado->id ? 'selected' : '' }}>
+                    {{ $empleado->persona->nombres }} {{ $empleado->persona->apellidos }}
+                </option>
                 @endforeach
             </select>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <select name="tipo_equipo_id" class="form-control">
                 <option value="">-- Todos los tipos de equipo --</option>
                 @foreach($tipos_equipo as $tipo)
-                    <option value="{{ $tipo->id }}" {{ request('tipo_equipo_id') == $tipo->id ? 'selected' : '' }}>
-                        {{ $tipo->nombre }}
-                    </option>
+                <option value="{{ $tipo->id }}" {{ request('tipo_equipo_id') == $tipo->id ? 'selected' : '' }}>
+                    {{ $tipo->nombre }}
+                </option>
                 @endforeach
             </select>
         </div>
@@ -34,9 +34,9 @@
             <select name="equipo_id" class="form-control">
                 <option value="">-- Todos los equipos --</option>
                 @foreach($equipos as $equipo)
-                    <option value="{{ $equipo->id }}" {{ request('equipo_id') == $equipo->id ? 'selected' : '' }}>
-                        {{ $equipo->modelo->nombre_comercial ?? 'Equipo '.$equipo->id }}
-                    </option>
+                <option value="{{ $equipo->id }}" {{ request('equipo_id') == $equipo->id ? 'selected' : '' }}>
+                    {{ $equipo->modelo->nombre_comercial ?? 'Equipo '.$equipo->id }}
+                </option>
                 @endforeach
             </select>
         </div>
@@ -46,6 +46,11 @@
         <div class="col-md-1">
             <button type="submit" class="btn btn-primary">Filtrar</button>
         </div>
+        <div class="col-md-1">
+            <a href="{{ route('asignacion.exportar_pdf', request()->query()) }}" class="btn btn-success mb-1">
+                PDF
+            </a>
+        </div>
     </div>
 </form>
 <div class="table-responsive">
@@ -54,8 +59,8 @@
             <tr>
                 <th>Empleado</th>
                 <th>Tipo de Equipo</th>
-                <th>Equipo</th> 
-                <th>Serie</th>               
+                <th>Equipo</th>
+                <th>Serie</th>
                 <th>Fecha Recepción</th>
             </tr>
         </thead>
@@ -67,7 +72,7 @@
                     {{ $detalle->asignacion->empleado->persona->apellidos ?? '' }}
                 </td>
                 <td>{{ $detalle->inventario->equipo->modelo->tipo_equipo->nombre ?? '-' }}</td>
-                <td>{{ $detalle->inventario->equipo->modelo->nombre_comercial ?? '-' }}</td>  
+                <td>{{ $detalle->inventario->equipo->modelo->nombre_comercial ?? '-' }}</td>
                 <td>{{ $detalle->inventario->numero_serie ?? '-' }}</td>
                 <td>{{ $detalle->inventario->equipo->fecha_recepcion ?? '-' }}</td>
             </tr>

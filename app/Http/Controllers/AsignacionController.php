@@ -11,7 +11,10 @@ use App\Models\Inventario;
 use App\Models\TipoEquipo;
 use App\Models\Equipo;
 
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\Facade\PDF;
+
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class AsignacionController extends Controller
 {
@@ -214,11 +217,11 @@ class AsignacionController extends Controller
     }
     public function listadoAsignaciones(Request $request)
     {
-        // Para los selects del filtro
         $empleados = Empleado::with('persona')->where('estado', 1)->get();
         $tipos_equipo = TipoEquipo::all();
         $equipos = Equipo::with('modelo')->get();
 
+        // 1. Aplica los filtros usando Eloquent y whereHas
         $query = DetalleAsignacion::with([
             'asignacion.empleado.persona',
             'inventario.equipo.modelo.tipo_equipo'
@@ -244,7 +247,8 @@ class AsignacionController extends Controller
                 $q->whereDate('fecha_recepcion', $request->fecha_recepcion);
             });
         }
-        // Ordenar por nombre del empleado (persona)
+
+        // 2. Solo aquí aplica el join y el orderBy
         $query->join('asignacion', 'detalle_asignacion.id_asignacion', '=', 'asignacion.id')
             ->join('empleado', 'asignacion.id_empleado', '=', 'empleado.id')
             ->join('persona', 'empleado.id_persona', '=', 'persona.id')
@@ -254,5 +258,49 @@ class AsignacionController extends Controller
         $detalles = $query->get();
 
         return view('admin.asignacion.listado_asignaciones', compact('detalles', 'empleados', 'tipos_equipo', 'equipos'));
+    }
+    public function exportarPDF(Request $request)
+    {
+        $query = DetalleAsignacion::with([
+            'asignacion.empleado.persona',
+            'inventario.equipo.modelo.tipo_equipo'
+        ])->where('detalle_asignacion.estado', 1);
+
+        // Filtros igual que en listadoAsignaciones
+        if ($request->filled('empleado_id')) {
+            $query->whereHas('asignacion', function ($q) use ($request) {
+                $q->where('id_empleado', $request->empleado_id);
+            });
+        }
+        if ($request->filled('tipo_equipo_id')) {
+            $query->whereHas('inventario.equipo.modelo', function ($q) use ($request) {
+                $q->where('id_tipo_equipo', $request->tipo_equipo_id);
+            });
+        }
+        if ($request->filled('equipo_id')) {
+            $query->whereHas('inventario.equipo', function ($q) use ($request) {
+                $q->where('id', $request->equipo_id);
+            });
+        }
+        if ($request->filled('fecha_recepcion')) {
+            $query->whereHas('inventario.equipo', function ($q) use ($request) {
+                $q->whereDate('fecha_recepcion', $request->fecha_recepcion);
+            });
+        }
+
+        // Ordenar por nombre del empleado (persona)
+        $query->join('asignacion', 'detalle_asignacion.id_asignacion', '=', 'asignacion.id')
+            ->join('empleado', 'asignacion.id_empleado', '=', 'empleado.id')
+            ->join('persona', 'empleado.id_persona', '=', 'persona.id')
+            ->orderBy('persona.nombres')
+            ->select('detalle_asignacion.*');
+
+        $detalles = $query->get();
+
+        $fechaHora = Carbon::now()->format('d/m/Y H:i');
+        
+
+        $pdf = PDF::loadView('admin.asignacion.export_pdf', compact('detalles', 'fechaHora'));
+        return $pdf->download('asignaciones.pdf');
     }
 }
