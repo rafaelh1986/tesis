@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Inventario;
 use App\Models\Equipo;
+use Illuminate\Support\Facades\DB;
 
 class InventarioController extends Controller
 {
@@ -23,17 +24,24 @@ class InventarioController extends Controller
     }
 
     public function index(Request $request)
-    {
-        //dd($request);
-        $inventarios = Inventario::paginate(5);
-        return view('admin/inventario/index')->with('inventarios', $inventarios);
-    }
+{
+    $perPage = $request->input('per_page', 10); // Valor por defecto: 10
+    $inventarios = Inventario::paginate($perPage);
+    return view('admin/inventario/index', compact('inventarios', 'perPage'));
+}
     public function create()
     {
-        $equipos = Equipo::where('estado', 1)->get();
+        // Solo equipos activos
+        $equipos = Equipo::where('estado', 1)->with('modelo')->get();
 
-        return view('admin/inventario/create')->with('equipos', $equipos);
+        // Calcula la cantidad de inventarios registrados por equipo
+        $inventariosPorEquipo = Inventario::select('id_equipo', DB::raw('count(*) as usados'))
+            ->groupBy('id_equipo')
+            ->pluck('usados', 'id_equipo');
+
+        return view('admin/inventario/create', compact('equipos', 'inventariosPorEquipo'));
     }
+
     public function store(Request $request)
     {
         $request->validate([

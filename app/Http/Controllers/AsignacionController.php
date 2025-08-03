@@ -220,12 +220,24 @@ class AsignacionController extends Controller
         $empleados = Empleado::with('persona')->where('estado', 1)->get();
         $tipos_equipo = TipoEquipo::all();
         $equipos = Equipo::with('modelo')->get();
+        $fechas_recepcion = Equipo::select('fecha_recepcion')->distinct()->get();
+        $anios_recepcion = $fechas_recepcion->pluck('fecha_recepcion')
+            ->filter()
+            ->map(function ($fecha) {
+                return date('Y', strtotime($fecha));
+            })
+            ->unique()
+            ->sort()
+            ->values();
 
         // 1. Aplica los filtros usando Eloquent y whereHas
         $query = DetalleAsignacion::with([
             'asignacion.empleado.persona',
             'inventario.equipo.modelo.tipo_equipo'
-        ])->where('detalle_asignacion.estado', 1);
+        ])->where('detalle_asignacion.estado', 1) // Solo detalles asignados
+            ->whereHas('inventario', function ($q) {
+                $q->where('estado', 2); // Solo inventarios asignados
+            });
 
         if ($request->filled('empleado_id')) {
             $query->whereHas('asignacion', function ($q) use ($request) {
@@ -247,6 +259,11 @@ class AsignacionController extends Controller
                 $q->whereDate('fecha_recepcion', $request->fecha_recepcion);
             });
         }
+        if ($request->filled('anio_recepcion')) {
+            $query->whereHas('inventario.equipo', function ($q) use ($request) {
+                $q->whereYear('fecha_recepcion', $request->anio_recepcion);
+            });
+        }
 
         // 2. Solo aquí aplica el join y el orderBy
         $query->join('asignacion', 'detalle_asignacion.id_asignacion', '=', 'asignacion.id')
@@ -257,7 +274,14 @@ class AsignacionController extends Controller
 
         $detalles = $query->get();
 
-        return view('admin.asignacion.listado_asignaciones', compact('detalles', 'empleados', 'tipos_equipo', 'equipos'));
+        return view('admin.asignacion.listado_asignaciones', compact(
+            'detalles',
+            'empleados',
+            'tipos_equipo',
+            'equipos',
+            'fechas_recepcion',
+            'anios_recepcion'
+        ));
     }
     public function exportarPDF(Request $request)
     {
@@ -287,6 +311,11 @@ class AsignacionController extends Controller
                 $q->whereDate('fecha_recepcion', $request->fecha_recepcion);
             });
         }
+        if ($request->filled('anio_recepcion')) {
+            $query->whereHas('inventario.equipo', function ($q) use ($request) {
+                $q->whereYear('fecha_recepcion', $request->anio_recepcion);
+            });
+        }
 
         // Ordenar por nombre del empleado (persona)
         $query->join('asignacion', 'detalle_asignacion.id_asignacion', '=', 'asignacion.id')
@@ -298,7 +327,7 @@ class AsignacionController extends Controller
         $detalles = $query->get();
 
         $fechaHora = Carbon::now()->format('d/m/Y H:i');
-        
+
 
         $pdf = PDF::loadView('admin.asignacion.export_pdf', compact('detalles', 'fechaHora'));
         return $pdf->download('asignaciones.pdf');

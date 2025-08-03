@@ -41,7 +41,14 @@
             </select>
         </div>
         <div class="col-md-2">
-            <input type="date" name="fecha_recepcion" class="form-control" value="{{ request('fecha_recepcion') }}">
+            <select name="anio_recepcion" class="form-control">
+                <option value="">-- Todos los años --</option>
+                @foreach($anios_recepcion as $anio)
+                <option value="{{ $anio }}" {{ request('anio_recepcion') == $anio ? 'selected' : '' }}>
+                    {{ $anio }}
+                </option>
+                @endforeach
+            </select>
         </div>
         <div class="col-md-1">
             <button type="submit" class="btn btn-primary">Filtrar</button>
