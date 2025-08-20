@@ -21,9 +21,9 @@ class PermissionController extends Controller
 
     public function index(Request $request)
     {
-        //dd($request);
-        $permisos = Permission::paginate(7);
-        return view('admin/permiso/index')->with('permisos', $permisos);
+        $perPage = $request->input('per_page', 10);
+        $permisos = Permission::paginate($perPage);
+        return view('admin/permiso/index', compact('permisos', 'perPage'));
     }
     public function create()
     {

@@ -27,9 +27,9 @@ class EquipoController extends Controller
 
     public function index(Request $request)
     {
-        //dd($request);
-        $equipos = Equipo::paginate(5);
-        return view('admin/equipo/index')->with('equipos', $equipos);
+        $perPage = $request->input('per_page', 10);
+        $equipos = Equipo::paginate($perPage);
+        return view('admin/equipo/index', compact('equipos', 'perPage'));
     }
     public function create()
     {

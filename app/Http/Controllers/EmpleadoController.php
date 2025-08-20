@@ -26,9 +26,9 @@ class EmpleadoController extends Controller
     }
 
     public function index(Request $request){
-        //dd($request);
-        $empleados =Empleado::paginate(5);
-        return view('admin/empleado/index')->with('empleados',$empleados);
+        $perPage = $request->get('perPage', 10); // Valor por defecto de 10 registros por página
+        $empleados =Empleado::paginate($perPage);
+        return view('admin/empleado/index',compact('empleados','perPage'));
     }
     public function create(){
         $personas = Persona::where('estado',1)->get();

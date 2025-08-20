@@ -23,8 +23,9 @@ class ModeloController extends Controller
 
     public function index(Request $request)
     {
-        $modelos = Modelo::paginate(5);
-        return view('admin/modelo/index')->with('modelos', $modelos);
+        $perPage = $request->input('per_page', 10);
+        $modelos = Modelo::paginate($perPage);
+        return view('admin/modelo/index', compact('modelos', 'perPage'));
     }
     public function create()
     {

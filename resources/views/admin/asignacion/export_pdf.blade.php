@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Listado de Asignaciones</title>
@@ -9,31 +10,39 @@
             font-family: 'Arial', sans-serif;
             font-size: 12px;
         }
-        th, td {
+
+        th,
+        td {
             border: 1px solid #333;
             padding: 4px 8px;
         }
+
         table {
             border-collapse: collapse;
             width: 100%;
         }
+
         .logo {
             width: 120px;
         }
+
         .titulo {
             text-align: center;
             margin-bottom: 20px;
         }
     </style>
 </head>
+
 <body>
-    <div style="margin-bottom: 24px">
+    <div style="margin-bottom: 24px; display: flex; align-items: flex-start; justify-content: space-between;">
         <img src="{{ public_path('img/logoy.png') }}" alt="Logo" class="logo">
-        <h2 class="titulo">Listado de Asignaciones</h2>
-        <p>
-            <strong>Generado por:</strong> {{ Auth::user()->persona->nombres.' '.Auth::user()->persona->apellidos }}<br>
-            <strong>Fecha y hora:</strong> {{ $fechaHora }}
-        </p>
+        <div style="text-align: right;">
+            <p style="margin: 0;">
+                <strong>Generado por:</strong> {{ Auth::user()->persona->nombres.' '.Auth::user()->persona->apellidos }}<br>
+                <strong>Fecha y hora:</strong> {{ $fechaHora }}
+            </p>
+        </div>
+        <h2 class="titulo">Listado de asignaciones</h2>
     </div>
     <table>
         <thead>
@@ -60,6 +69,7 @@
             @endforeach
         </tbody>
     </table>
-    
+
 </body>
+
 </html>

@@ -33,9 +33,9 @@ class AsignacionController extends Controller
 
     public function index(Request $request)
     {
-        //dd($request);
-        $asignaciones = Asignacion::paginate(10);
-        return view('admin/asignacion/index')->with('asignaciones', $asignaciones);
+        $perPage = $request->input('per_page', 10); // Valor por defecto de 10 si no se especifica
+        $asignaciones = Asignacion::paginate($perPage);
+        return view('admin/asignacion/index', compact('asignaciones', 'perPage'));
     }
     public function create()
     {

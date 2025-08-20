@@ -20,9 +20,10 @@ class PersonaController extends Controller
     }
     public function index(Request $request)
     {
-        $personas = Persona::paginate(5);
+        $perPage = $request->input('per_page', 10); // Valor por defecto: 10
+        $personas = Persona::paginate($perPage);
         //dd($request);
-        return view('admin/persona/index')->with('personas', $personas);
+        return view('admin/persona/index', compact('personas','perPage'));
     }
     public function create()
     {
