@@ -21,9 +21,9 @@ class RoleController extends Controller
     }
     public function index(Request $request)
     {
-        //dd($request);
-        $roles = Role::paginate(5);
-        return view('admin/rol/index')->with('roles', $roles);
+        $perPage = $request->input('per_page', 10);
+        $roles = Role::paginate($perPage);
+        return view('admin/rol/index',compact('roles', 'perPage'));
     }
     public function create()
     {

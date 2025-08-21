@@ -21,8 +21,9 @@ class TipoEquipoController extends Controller
 
     public function index(Request $request)
     {
-        $tipo_equipos = TipoEquipo::paginate(5);
-        return view('admin/tipo_equipo/index')->with('tipo_equipos', $tipo_equipos);
+        $perPage = $request->input('per_page', 10);
+        $tipo_equipos = TipoEquipo::paginate($perPage);
+        return view('admin/tipo_equipo/index', compact('tipo_equipos', 'perPage'));
     }
     public function create()
     {

@@ -52,7 +52,18 @@
             @endforeach
         </tbody>
     </table>
+    <form method="GET" class="form-inline mb-2">
+        <label for="per_page" class="mr-2">Mostrar</label>
+        <select name="per_page" id="per_page" class="form-control mr-2" onchange="this.form.submit()">
+            <option value="5" {{ $perPage == 5 ? 'selected' : '' }}>5</option>
+            <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10</option>
+            <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25</option>
+            <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
+            <option value="100" {{ $perPage == 100 ? 'selected' : '' }}>100</option>
+        </select>
+        <span>registros por página</span>
+    </form>
 </div>
 <hr class="sidebar-divider d-none d-sm-block" style color="#b7b9cc">
-{{$roles -> links()}}
+{{$roles -> appends(request()->except('page'))->links() }}
 @endsection

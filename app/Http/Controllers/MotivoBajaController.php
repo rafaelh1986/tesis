@@ -22,8 +22,9 @@ class MotivoBajaController extends Controller
 
     public function index(Request $request)
     {
-        $motivo_bajas = MotivoBaja::paginate(5);
-        return view('admin/motivo_baja/index')->with('motivo_bajas', $motivo_bajas);
+        $perPage = $request->input('per_page', 10);
+        $motivo_bajas = MotivoBaja::paginate($perPage);
+        return view('admin/motivo_baja/index',compact('motivo_bajas', 'perPage'));
     }
     public function create()
     {

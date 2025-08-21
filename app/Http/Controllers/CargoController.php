@@ -19,32 +19,39 @@ class CargoController extends Controller
         $this->middleware(['permission:cargo.show'])->only('show');
     }
 
-    public function index(Request $request){
-        $cargos =Cargo::paginate(5);
-        return view('admin/cargo/index')->with('cargos',$cargos);
+    public function index(Request $request)
+    {
+        $perPage = $request->get('per_page', 10);
+        $cargos = Cargo::paginate($perPage);
+        return view('admin/cargo/index', compact('cargos', 'perPage'));
     }
-    public function create(){
-        
+    public function create()
+    {
+
         return view('admin/cargo/create');
     }
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
             'nombre' => 'required|string|max:255',
         ]);
         $cargo = new Cargo();
         $cargo->nombre = $request->nombre;
         $cargo->save();
-        return redirect()->route('cargo.index')->with('success','¡Creado Satisfactoriamente!');
+        return redirect()->route('cargo.index')->with('success', '¡Creado Satisfactoriamente!');
     }
-    public function show($id){
+    public function show($id)
+    {
         $cargo = Cargo::find($id);
-        return view('admin/cargo/show')->with('cargo',$cargo);
+        return view('admin/cargo/show')->with('cargo', $cargo);
     }
-    public function edit($id){
+    public function edit($id)
+    {
         $cargo = Cargo::find($id);
-        return view('admin/cargo/edit')->with('cargo',$cargo);
+        return view('admin/cargo/edit')->with('cargo', $cargo);
     }
-    public function update(Request $request,$id){
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'nombre' => 'required|string|max:255',
         ]);
@@ -55,22 +62,22 @@ class CargoController extends Controller
         }
         $cargo->nombre = $request->nombre;
         $cargo->save();
-        return redirect()->route('cargo.index')->with('success','¡Editado Satisfactoriamente!');
+        return redirect()->route('cargo.index')->with('success', '¡Editado Satisfactoriamente!');
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $cargo = Cargo::find($id);
         if (!$cargo) {
             return redirect()->route('cargo.index')->with('error', 'Cargo no encontrado.');
         }
-        if($cargo->estado == 1){
+        if ($cargo->estado == 1) {
             $cargo->estado = 0;
             $mensaje = "¡Eliminado Satisfactoriamente!";
-        }
-        else{
+        } else {
             $cargo->estado = 1;
             $mensaje = "¡Restaurado Satisfactoriamente!";
         }
         $cargo->save();
-        return redirect()->route('cargo.index')->with('success',$mensaje);
+        return redirect()->route('cargo.index')->with('success', $mensaje);
     }
 }

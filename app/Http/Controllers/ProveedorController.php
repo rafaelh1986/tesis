@@ -19,9 +19,9 @@ class ProveedorController extends Controller
         $this->middleware(['permission:proveedor.show'])->only('show');
     }
     public function index(Request $request){
-        $proveedores=Proveedor::paginate(5);
-        //dd($request);
-        return view('admin/proveedor/index')->with('proveedores',$proveedores);
+        $perPage = $request->get('perPage', 10);
+        $proveedores=Proveedor::paginate($perPage);
+        return view('admin/proveedor/index', compact('proveedores','perPage'));
     }
     public function create(){
         return view('admin/proveedor/create');

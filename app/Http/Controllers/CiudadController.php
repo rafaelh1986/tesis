@@ -20,8 +20,9 @@ class CiudadController extends Controller
     }
 
     public function index(Request $request){
-        $ciudades =Ciudad::paginate(5);
-        return view('admin/ciudad/index')->with('ciudades',$ciudades);
+        $perPage = $request->input('per_page', 10);
+        $ciudades =Ciudad::paginate($perPage);
+        return view('admin/ciudad/index', compact('ciudades','perPage'));
     }
     public function create(){
         

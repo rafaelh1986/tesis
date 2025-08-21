@@ -24,9 +24,9 @@ class UsuarioController extends Controller
 
     public function index(Request $request)
     {
-        //dd($request);
-        $usuarios = User::paginate(5);
-        return view('admin/usuario/index')->with('usuarios', $usuarios);
+        $perPage = $request->input('per_page', 10);
+        $usuarios = User::paginate($perPage);
+        return view('admin/usuario/index', compact('usuarios', 'perPage'));
     }
     public function create()
     {

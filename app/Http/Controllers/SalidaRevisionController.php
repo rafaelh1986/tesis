@@ -22,23 +22,26 @@ class SalidaRevisionController extends Controller
         $this->middleware(['permission:salida_revision.show'])->only('show');
     }
 
-    public function index(Request $request){
-        //dd($request);
-        $salidarevisiones = SalidaRevision::paginate(5);
-        return view('admin/salidarevision/index')->with('salidarevisiones',$salidarevisiones);
+    public function index(Request $request)
+    {
+        $perPage = $request->input('per_page', 10);
+        $salidarevisiones = SalidaRevision::paginate($perPage);
+        return view('admin/salidarevision/index', compact('salidarevisiones', 'perPage'));
     }
-    public function create(){
-        $inventarios = Inventario::where('estado',1)->get();
-        $proveedores = Proveedor::where('estado',1)->get();
-        return view('admin/salidarevision/create')->with('proveedores',$proveedores)->with('inventarios',$inventarios);
+    public function create()
+    {
+        $inventarios = Inventario::where('estado', 1)->get();
+        $proveedores = Proveedor::where('estado', 1)->get();
+        return view('admin/salidarevision/create')->with('proveedores', $proveedores)->with('inventarios', $inventarios);
     }
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         // Validación de datos
         $request->validate([
             'id_inventario' => 'required|exists:inventarios,id',
             'id_proveedor' => 'required|exists:proveedores,id',
             'fecha_salida' => 'required|date',
-            
+
         ]);
         $salidarevision = new SalidaRevision();
         $salidarevision->id_inventario = $request->id_inventario;
@@ -54,18 +57,21 @@ class SalidaRevisionController extends Controller
             $inventario->estado = 3;
             $inventario->save();
         }
-        return redirect()->route('salida_revision.index')->with('success','¡Creado Satisfactoriamente!');
+        return redirect()->route('salida_revision.index')->with('success', '¡Creado Satisfactoriamente!');
     }
-    public function show($id){
+    public function show($id)
+    {
         $salida_revision = SalidaRevision::find($id);
-        
-        return view('admin/salidarevision/show')->with('salida_revision',$salida_revision);
+
+        return view('admin/salidarevision/show')->with('salida_revision', $salida_revision);
     }
-    public function edit($id){
+    public function edit($id)
+    {
         $salida_revision = SalidaRevision::find($id);
-        return view('admin/salidarevision/edit')->with('salida_revision',$salida_revision);
+        return view('admin/salidarevision/edit')->with('salida_revision', $salida_revision);
     }
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         // Validación de datos
         $request->validate([
             'fecha_salida' => 'required|date',
@@ -94,9 +100,10 @@ class SalidaRevisionController extends Controller
         }
 
         $salidarevision->save();
-        return redirect()->route('salida_revision.index')->with('success','¡Editado Satisfactoriamente!');
+        return redirect()->route('salida_revision.index')->with('success', '¡Editado Satisfactoriamente!');
     }
-    public function destroy($id){
+    public function destroy($id)
+    {
         $salidarevision = SalidaRevision::findOrFail($id);
 
         // No permitir eliminar si no existe fecha de retorno
@@ -107,15 +114,14 @@ class SalidaRevisionController extends Controller
 
         $inventario = Inventario::find($salidarevision->id_inventario);
 
-        if($salidarevision->estado == 1){
+        if ($salidarevision->estado == 1) {
             $salidarevision->estado = 0;
             $mensaje = "¡Eliminado Satisfactoriamente!";
             if ($inventario) {
                 $inventario->estado = 1; // Disponible
                 $inventario->save();
             }
-        }
-        else{
+        } else {
             $salidarevision->estado = 1;
             $mensaje = "¡Restaurado Satisfactoriamente!";
             if ($inventario) {
@@ -124,7 +130,6 @@ class SalidaRevisionController extends Controller
             }
         }
         $salidarevision->save();
-        return redirect()->route('salida_revision.index')->with('success',$mensaje);
+        return redirect()->route('salida_revision.index')->with('success', $mensaje);
     }
-        
 }

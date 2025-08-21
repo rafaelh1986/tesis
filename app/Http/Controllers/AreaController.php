@@ -21,8 +21,9 @@ class AreaController extends Controller
     }
     public function index(Request $request)
     {
-        $areas = Area::paginate(10);
-        return view('admin/area/index')->with('areas', $areas);
+        $perPage = $request->input('per_page', 10);
+        $areas = Area::paginate($perPage);
+        return view('admin/area/index', compact('areas', 'perPage'));
     }
     public function create()
     {

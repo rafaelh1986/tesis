@@ -24,9 +24,9 @@ class BajaInventarioController extends Controller
     }
 
     public function index(Request $request){
-        //dd($request);
-        $bajainventarios = BajaInventario::paginate(5);
-        return view('admin/baja_inventario/index')->with('bajainventarios',$bajainventarios);
+        $perPage = $request->get('per_page', 10);
+        $bajainventarios = BajaInventario::paginate($perPage);
+        return view('admin/baja_inventario/index', compact('bajainventarios','perPage'));
     }
     public function create(){
         $inventarios = Inventario::where('estado',1)->get();
