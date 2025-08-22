@@ -148,4 +148,41 @@ class EquipoController extends Controller
         }
         return view('admin/equipo/grafico')->with('datos', $datos);
     }
+    public function graficoPorAnio(Request $request)
+    {
+        // Si hay filtro de año, úsalo; si no, muestra todos los años
+        $anio = $request->input('anio');
+        $query = DB::table('equipo')
+            ->select(DB::raw('YEAR(fecha_recepcion) as anio'), DB::raw('SUM(cantidad) as cantidad'))
+            ->groupBy(DB::raw('YEAR(fecha_recepcion)'))
+            ->orderBy('anio', 'desc');
+
+        $anios = DB::table('equipo')
+            ->select(DB::raw('YEAR(fecha_recepcion) as anio'))
+            ->distinct()
+            ->orderBy('anio', 'desc')
+            ->pluck('anio');
+
+        if ($anio) {
+            $query->having('anio', '=', $anio);
+        }
+
+        $coleccion = $query->get();
+
+        $colores = ['#3366cc', '#dc3912', '#ff9900', '#109618', '#990099', '#0099c6', '#dd4477', '#66aa00', '#b82e2e', '#316395'];
+        $datos = [];
+        $colorIndex = 0;
+        foreach ($coleccion as $fila) {
+            $color = $colores[$colorIndex % count($colores)];
+            $item = [strval($fila->anio), (int)$fila->cantidad, $color];
+            array_push($datos, $item);
+            $colorIndex++;
+        }
+
+        return view('admin/equipo/grafico_anio', [
+            'datos' => $datos,
+            'anios' => $anios,
+            'anioSeleccionado' => $anio
+        ]);
+    }
 }

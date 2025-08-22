@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
         return view('inicio');
     });
     Route::get('equipo/grafico',[EquipoController::class, 'grafico'])->name('equipo.grafico');
+    Route::get('equipo/grafico-anio', [EquipoController::class, 'graficoPorAnio'])->name('equipo.grafico_anio');
 
     Route::resource('/usuario',UsuarioController::class);
     Route::resource('/persona',PersonaController::class);

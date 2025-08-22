@@ -243,6 +243,13 @@
                     <span>Cantidad de laptops</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('equipo.grafico_anio')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Equipos por Año</span>
+                </a>
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
             <!-- Divider -->
