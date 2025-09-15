@@ -8,7 +8,7 @@
 </div>
 @endsection
 @section('contenido')
-<form method="GET" class="mb-3">
+<form method="GET" class="mb-3" id="filtro-asignaciones">
     <div class="row">
         <div class="col-md-3">
             <select name="empleado_id" class="form-control">
@@ -20,39 +20,20 @@
                 @endforeach
             </select>
         </div>
-        <div class="col-md-2">
-            <select name="tipo_equipo_id" class="form-control">
+        <div class="col-md-3">
+            <select name="tipo_equipo_id" class="form-control" id="tipo-equipo-select">
                 <option value="">-- Todos los tipos de equipo --</option>
+                @if(isset($tipos_equipo))
                 @foreach($tipos_equipo as $tipo)
                 <option value="{{ $tipo->id }}" {{ request('tipo_equipo_id') == $tipo->id ? 'selected' : '' }}>
                     {{ $tipo->nombre }}
                 </option>
                 @endforeach
+                @endif
             </select>
         </div>
-        <div class="col-md-3">
-            <select name="equipo_id" class="form-control">
-                <option value="">-- Todos los equipos --</option>
-                @foreach($equipos as $equipo)
-                <option value="{{ $equipo->id }}" {{ request('equipo_id') == $equipo->id ? 'selected' : '' }}>
-                    {{ $equipo->modelo->nombre_comercial ?? 'Equipo '.$equipo->id }}
-                </option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-2">
-            <select name="anio_recepcion" class="form-control">
-                <option value="">-- Todos los años --</option>
-                @foreach($anios_recepcion as $anio)
-                <option value="{{ $anio }}" {{ request('anio_recepcion') == $anio ? 'selected' : '' }}>
-                    {{ $anio }}
-                </option>
-                @endforeach
-            </select>
-        </div>
-        <div class="col-md-1">
-            <button type="submit" class="btn btn-primary">Filtrar</button>
-        </div>
+
+
         <div class="col-md-1">
             <a href="{{ route('asignacion.exportar_pdf', request()->query()) }}" class="btn btn-success mb-1">
                 PDF
@@ -60,6 +41,35 @@
         </div>
     </div>
 </form>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('filtro-asignaciones');
+    const empleadoSelect = form.querySelector('select[name="empleado_id"]');
+    const tipoSelect = form.querySelector('select[name="tipo_equipo_id"]');
+
+    empleadoSelect.addEventListener('change', function() {
+        var empleadoId = this.value;
+        if (!empleadoId) {
+            tipoSelect.innerHTML = '<option value="">-- Todos los tipos de equipo --</option>';
+            form.submit();
+            return;
+        }
+        fetch("{{ route('asignacion.tipos_por_empleado') }}?empleado_id=" + empleadoId)
+            .then(response => response.json())
+            .then(data => {
+                tipoSelect.innerHTML = '<option value="">-- Todos los tipos de equipo --</option>';
+                data.forEach(function(tipo) {
+                    tipoSelect.innerHTML += `<option value="${tipo.id}">${tipo.nombre}</option>`;
+                });
+                form.submit();
+            });
+    });
+
+    tipoSelect.addEventListener('change', function() {
+        form.submit();
+    });
+});
+</script>
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -88,5 +98,7 @@
     </table>
 </div>
 <hr class="sidebar-divider d-none d-sm-block" style color="#b7b9cc">
+
+
 
 @endsection

@@ -58,28 +58,36 @@ class AsignacionController extends Controller
         return redirect()->route('asignacion.edit', $asignacion->id)->with('success', '¡Creado Satisfactoriamente!');
     }
     public function storeDetalle(Request $request)
-    {
-        $request->validate([
-            'id_inventario' => 'required|exists:inventario,id',
-            'id_asignacion' => 'required|exists:asignacion,id',
-        ]);
-        $detalle = new DetalleAsignacion();
-        $id_inventario = $request->id_inventario;
-        $id_asignacion = $request->id_asignacion;
-        if ($this->verificarItemExistenteEnAsignacion($id_inventario, $id_asignacion) == false) {
-            $detalle->id_inventario = $request->id_inventario;
-            $detalle->id_asignacion = $request->id_asignacion;
-            $detalle->estado = 1;
-            $detalle->save();
+{
+    $request->validate([
+        'id_inventario'   => 'required|array',
+        'id_inventario.*' => 'required|exists:inventario,id',
+        'id_asignacion'   => 'required|exists:asignacion,id',
+    ]);
 
-            $inventario = Inventario::find($request->id_inventario);
-            if ($inventario) {
-                $inventario->estado = 2;
-                $inventario->save();
-            }
+    $id_asignacion = $request->id_asignacion;
+
+    foreach ($request->id_inventario as $id_inventario) {
+    // Evita duplicados si ya existe la asignación
+    if ($this->verificarItemExistenteEnAsignacion($id_inventario, $id_asignacion) == false) {
+        $detalle = new DetalleAsignacion();
+        $detalle->id_inventario = $id_inventario;
+        $detalle->id_asignacion = $id_asignacion;
+        $detalle->estado = 1; // Asignado
+        $detalle->save();
+
+        // Cambia el estado del inventario a asignado
+        $inventario = \App\Models\Inventario::find($id_inventario);
+        if ($inventario) {
+            $inventario->estado = 2; // 2 = asignado (ajusta según tu lógica)
+            $inventario->save();
         }
-        return redirect()->route('asignacion.edit', $request->id_asignacion);
     }
+}
+
+    return redirect()->route('asignacion.edit', $id_asignacion)
+        ->with('success', 'Equipos asignados correctamente.');
+}
 
     public function verificarItemExistenteEnAsignacion($id_inventario, $id_asignacion)
     {
@@ -331,5 +339,48 @@ class AsignacionController extends Controller
 
         $pdf = PDF::loadView('admin.asignacion.export_pdf', compact('detalles', 'fechaHora'));
         return $pdf->download('asignaciones.pdf');
+    }
+
+    public function filtrosPorEmpleado(Request $request)
+    {
+        $empleado_id = $request->empleado_id;
+
+        $detalles = \App\Models\DetalleAsignacion::whereHas('asignacion', function ($q) use ($empleado_id) {
+            $q->where('id_empleado', $empleado_id);
+        })
+            ->with('inventario.equipo.modelo.tipo_equipo')
+            ->get();
+
+        $tipos_equipo = $detalles->pluck('inventario.equipo.modelo.tipo_equipo')->unique('id')->values();
+        $equipos = $detalles->pluck('inventario.equipo')->unique('id')->values();
+        $anios = $detalles->pluck('inventario.equipo.fecha_recepcion')
+            ->filter()
+            ->map(function ($fecha) {
+                return date('Y', strtotime($fecha));
+            })
+            ->unique()
+            ->sort()
+            ->values();
+
+        return response()->json([
+            'tipos_equipo' => $tipos_equipo,
+            'equipos' => $equipos,
+            'anios' => $anios,
+        ]);
+    }
+    public function tiposPorEmpleado(Request $request)
+    {
+        $empleado_id = $request->empleado_id;
+
+        $tipos = \App\Models\DetalleAsignacion::whereHas('asignacion', function ($q) use ($empleado_id) {
+            $q->where('id_empleado', $empleado_id);
+        })
+            ->with('inventario.equipo.modelo.tipo_equipo')
+            ->get()
+            ->pluck('inventario.equipo.modelo.tipo_equipo')
+            ->unique('id')
+            ->values();
+
+        return response()->json($tipos);
     }
 }

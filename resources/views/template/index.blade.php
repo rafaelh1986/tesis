@@ -83,17 +83,35 @@
             @endcan
             <!-- Divider -->
             <hr class="sidebar-divider">
-            @can('asignacion.index')
+
             <!-- Heading -->
             <div class="sidebar-heading">
                 Asignación
             </div>
-
+            @can('asignacion.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('asignacion.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Asignación</span>
+                </a>
+            </li>
+            @endcan
+            @can('inventario.index')
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('inventario.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-info"></i>
+                    <span>Inventario</span>
+                </a>
+            </li>
+            @endcan
+            @can('equipo.index')
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('equipo.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-desktop"></i>
+                    <span>Equipo</span>
                 </a>
             </li>
             @endcan
@@ -117,7 +135,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('empleado.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-user-tie"></i>
                     <span>Empleado</span>
                 </a>
             </li>
@@ -126,7 +144,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('ciudad.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-city"></i>
                     <span>Ciudad</span>
                 </a>
             </li>
@@ -153,7 +171,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('marca.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fab fa-medium-m"></i>
                     <span>Marca</span>
                 </a>
             </li>
@@ -167,15 +185,7 @@
                 </a>
             </li>
             @endcan
-            @can('equipo.index')
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{{route('equipo.index')}}"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Equipo</span>
-                </a>
-            </li>
-            @endcan
+
             @can('tipo_equipo.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('tipo_equipo.index')}}"
@@ -185,15 +195,7 @@
                 </a>
             </li>
             @endcan
-            @can('inventario.index')
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{{route('inventario.index')}}"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Inventario</span>
-                </a>
-            </li>
-            @endcan
+            
             @can('baja_inventario.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('bajainventario.index')}}"
@@ -216,7 +218,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('proveedor.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-user-tag"></i>
                     <span>Proveedor</span>
                 </a>
             </li>
@@ -225,7 +227,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('salida_revision.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-wrench"></i>
                     <span>Salida a revisión</span>
                 </a>
             </li>
