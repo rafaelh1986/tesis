@@ -1,7 +1,7 @@
 @extends('template.index')
 @section('encabezado')
 @php
-$asignacionBloqueada = $asignacion->estado != 1;
+$asignacionBloqueada = $asignacion->estado == 1;
 @endphp
 <div class="row">
     <div class="col-md-9">

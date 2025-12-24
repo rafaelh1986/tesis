@@ -47,7 +47,7 @@ class InventarioController extends Controller
         $request->validate([
             'id_equipo' => 'required|exists:equipo,id',
             'numero_serie' => 'required|string|max:255|unique:inventario,numero_serie',
-            'codigo_activo_fijo' => 'nullable|string|max:255',
+            'codigo_activo_fijo' => 'nullable|string|max:255|unique:inventario,codigo_activo_fijo',
         ]);
         $inventario = new Inventario();
         $inventario->id_equipo = $request->id_equipo;
@@ -78,7 +78,7 @@ class InventarioController extends Controller
         $request->validate([
             'id_equipo' => 'required|exists:equipo,id',
             'numero_serie' => 'required|string|max:255|unique:inventario,numero_serie,' . $id . ',id',
-            'codigo_activo_fijo' => 'nullable|string|max:255',
+            'codigo_activo_fijo' => 'nullable|string|max:255|unique:inventario,codigo_activo_fijo,' . $id . ',id',
         ]);
         $inventario = Inventario::find($id);
         //dd($inventario);
