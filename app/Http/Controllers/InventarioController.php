@@ -44,6 +44,7 @@ class InventarioController extends Controller
 
     public function store(Request $request)
     {
+        $request->merge(['numero_serie' => strtoupper($request->input('numero_serie'))]);
         $request->validate([
             'id_equipo' => 'required|exists:equipo,id',
             'numero_serie' => 'required|string|max:255|unique:inventario,numero_serie',
@@ -74,6 +75,7 @@ class InventarioController extends Controller
     }
     public function update(Request $request, $id)
     {
+        $request->merge(['numero_serie' => strtoupper($request->input('numero_serie'))]);
 
         $request->validate([
             'id_equipo' => 'required|exists:equipo,id',

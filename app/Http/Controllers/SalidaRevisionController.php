@@ -38,8 +38,8 @@ class SalidaRevisionController extends Controller
     {
         // Validación de datos
         $request->validate([
-            'id_inventario' => 'required|exists:inventarios,id',
-            'id_proveedor' => 'required|exists:proveedores,id',
+            'id_inventario' => 'required|exists:inventario,id',
+            'id_proveedor' => 'required|exists:proveedor,id',
             'fecha_salida' => 'required|date',
 
         ]);

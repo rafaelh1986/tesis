@@ -46,7 +46,7 @@ class AsignacionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_empleado' => 'required|exists:empleados,id',
+            'id_empleado' => 'required|exists:empleado,id',
             'fecha_asignacion' => 'required|date',
         ]);
         $asignacion = new Asignacion();

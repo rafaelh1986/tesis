@@ -30,7 +30,7 @@ class CiudadController extends Controller
     }
     public function store(Request $request){
         $request->validate([
-            'nombre' => 'required|string|max:255|unique:ciudads,nombre',
+            'nombre' => 'required|string|max:255|unique:ciudad,nombre',
         ]);
         $ciudad = new Ciudad();
         $ciudad->nombre = $request->nombre;
@@ -48,7 +48,7 @@ class CiudadController extends Controller
     }
     public function update(Request $request,$id){
         $request->validate([
-            'nombre' => 'required|string|max:255|unique:ciudads,nombre,' . $id,
+            'nombre' => 'required|string|max:255|unique:ciudad,nombre,' . $id,
         ]);
         // Verificar si la ciudad ya existe
         $ciudad = Ciudad::find($id);

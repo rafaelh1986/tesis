@@ -40,10 +40,10 @@ class EmpleadoController extends Controller
     }
     public function store(Request $request){
         $request->validate([
-            'id_persona' => 'required|exists:personas,id',
-            'id_area' => 'required|exists:areas,id',
-            'id_ciudad' => 'required|exists:ciudads,id',
-            'id_cargo' => 'required|exists:cargos,id',
+            'id_persona' => 'required|exists:persona,id',
+            'id_area' => 'required|exists:area,id',
+            'id_ciudad' => 'required|exists:ciudad,id',
+            'id_cargo' => 'required|exists:cargo,id',
             'email' => 'required|email|max:255',
             'telefono_interno' => 'nullable|string|max:50',
             'fecha_ingreso' => 'required|date',
@@ -97,10 +97,10 @@ class EmpleadoController extends Controller
     }
     public function update(Request $request,$id){
         $request->validate([
-            'id_persona' => 'required|exists:personas,id',
-            'id_area' => 'required|exists:areas,id',
-            'id_ciudad' => 'required|exists:ciudads,id',
-            'id_cargo' => 'required|exists:cargos,id',
+            'id_persona' => 'required|exists:persona,id',
+            'id_area' => 'required|exists:area,id',
+            'id_ciudad' => 'required|exists:ciudad,id',
+            'id_cargo' => 'required|exists:cargo,id',
             'email' => 'required|email|max:255',
             'telefono_interno' => 'nullable|string|max:50',
             'fecha_ingreso' => 'required|date',
