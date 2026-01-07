@@ -48,7 +48,7 @@
             <div class="col-md-3">
                 <label for="">Cantidad</label>
                 <input type="number" name="cantidad" id="" class="form-control" 
-                    value="{{$equipo->cantidad}}" required>
+                    value="{{$equipo->cantidad}}" readonly>
             </div>
             <div class="col-md-3">
                 <label for="">Fecha recepción</label>

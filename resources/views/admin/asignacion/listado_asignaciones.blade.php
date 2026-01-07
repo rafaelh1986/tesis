@@ -11,7 +11,7 @@
 <form method="GET" class="mb-3" id="filtro-asignaciones">
     <div class="row">
         <div class="col-md-3">
-            <select name="empleado_id" class="form-control">
+            <select name="empleado_id" id="empleado-select" class="form-control">
                 <option value="">-- Todos los empleados --</option>
                 @foreach($empleados as $empleado)
                 <option value="{{ $empleado->id }}" {{ request('empleado_id') == $empleado->id ? 'selected' : '' }}>
@@ -21,7 +21,7 @@
             </select>
         </div>
         <div class="col-md-3">
-            <select name="tipo_equipo_id" class="form-control" id="tipo-equipo-select">
+            <select name="tipo_equipo_id" id="tipo-equipo-select" class="form-control">
                 <option value="">-- Todos los tipos de equipo --</option>
                 @if(isset($tipos_equipo))
                 @foreach($tipos_equipo as $tipo)
@@ -33,7 +33,6 @@
             </select>
         </div>
 
-
         <div class="col-md-1">
             <a href="{{ route('asignacion.exportar_pdf', request()->query()) }}" class="btn btn-success mb-1">
                 PDF
@@ -44,25 +43,13 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('filtro-asignaciones');
-    const empleadoSelect = form.querySelector('select[name="empleado_id"]');
-    const tipoSelect = form.querySelector('select[name="tipo_equipo_id"]');
+    const empleadoSelect = document.getElementById('empleado-select');
+    const tipoSelect = document.getElementById('tipo-equipo-select');
 
     empleadoSelect.addEventListener('change', function() {
         var empleadoId = this.value;
-        if (!empleadoId) {
-            tipoSelect.innerHTML = '<option value="">-- Todos los tipos de equipo --</option>';
-            form.submit();
-            return;
-        }
-        fetch("{{ route('asignacion.tipos_por_empleado') }}?empleado_id=" + empleadoId)
-            .then(response => response.json())
-            .then(data => {
-                tipoSelect.innerHTML = '<option value="">-- Todos los tipos de equipo --</option>';
-                data.forEach(function(tipo) {
-                    tipoSelect.innerHTML += `<option value="${tipo.id}">${tipo.nombre}</option>`;
-                });
-                form.submit();
-            });
+        tipoSelect.innerHTML = '<option value="">-- Todos los tipos de equipo --</option>';
+        form.submit();
     });
 
     tipoSelect.addEventListener('change', function() {

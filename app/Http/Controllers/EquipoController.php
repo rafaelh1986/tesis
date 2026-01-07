@@ -106,6 +106,8 @@ class EquipoController extends Controller
         if (!$equipo) {
             return redirect()->route('equipo.index')->with('error', 'Equipo no encontrado.');
         }
+
+        
         $equipo->id_modelo = $request->id_modelo;
         $equipo->id_marca = $request->id_marca;
         $equipo->id_proveedor = $request->id_proveedor;

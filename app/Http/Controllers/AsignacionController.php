@@ -383,4 +383,28 @@ class AsignacionController extends Controller
 
         return response()->json($tipos);
     }
+
+    public function equiposPorTipo(Request $request)
+    {
+        $tipo_equipo_id = $request->tipo_equipo_id;
+        $empleado_id = $request->empleado_id;
+
+        $query = \App\Models\DetalleAsignacion::with('inventario.equipo.modelo');
+
+        if ($empleado_id) {
+            $query->whereHas('asignacion', function ($q) use ($empleado_id) {
+                $q->where('id_empleado', $empleado_id);
+            });
+        }
+
+        $equipos = $query->whereHas('inventario.equipo.modelo', function ($q) use ($tipo_equipo_id) {
+            $q->where('id_tipo_equipo', $tipo_equipo_id);
+        })
+            ->get()
+            ->pluck('inventario.equipo')
+            ->unique('id')
+            ->values();
+
+        return response()->json($equipos);
+    }
 }
