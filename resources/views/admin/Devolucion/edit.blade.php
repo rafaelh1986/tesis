@@ -1,0 +1,61 @@
+@extends('template.index')
+@section('encabezado')
+<div class="row">
+    <div class="col-md-9">
+        <h4 class="m-0 font-weight-bold text-primary">Editar devolución</h4>
+    </div>
+    <div class="col-md-3">
+        <a href="{{route('devolucion.index')}}" class="btn btn-sm btn-info btn-block">
+            <i class="fas fa-arrow-left"></i>Volver
+        </a>
+    </div>
+</div>
+@endsection
+@section('contenido')
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
+<form action="{{route('devolucion.update', $devolucion->id)}}" method="post">
+    @csrf
+    @method('PUT')
+    <div class="row">
+        <div class="col-md-6">
+            <label for="id_detalle_asignacion">Asignación</label>
+            <input type="text" class="form-control" disabled value="{{$devolucion->detalleAsignacion->asignacion->empleado->persona->nombres}} {{$devolucion->detalleAsignacion->asignacion->empleado->persona->apellidos}} - {{$devolucion->detalleAsignacion->inventario->equipo->nombre}}">
+            <input type="hidden" name="id_detalle_asignacion" value="{{$devolucion->id_detalle_asignacion}}">
+        </div>
+        <div class="col-md-6">
+            <label for="id_motivo_devolucion">Motivo de devolución</label>
+            <select name="id_motivo_devolucion" id="id_motivo_devolucion" class="form-control" required>
+                <option value="">-- Seleccionar --</option>
+                @foreach($motivos_devolucion as $motivo)
+                <option value="{{$motivo->id}}" {{$devolucion->id_motivo_devolucion == $motivo->id ? 'selected' : ''}}>{{$motivo->nombre}}</option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-6">
+            <label for="fecha_devolucion">Fecha de devolución</label>
+            <input type="date" name="fecha_devolucion" id="fecha_devolucion" class="form-control" value="{{ $devolucion->fecha_devolucion }}" required>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <label for="observaciones">Observaciones</label>
+            <textarea name="observaciones" id="observaciones" class="form-control" rows="4">{{ $devolucion->observaciones }}</textarea>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-2">
+            <input type="submit" value="Actualizar" class="btn btn-success btn-block">
+        </div>
+    </div>
+</form>
+@endsection

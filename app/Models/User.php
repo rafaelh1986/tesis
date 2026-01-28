@@ -37,10 +37,14 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function persona(){
-        return $this->hasOne('App\Models\Persona','id','id_persona');
+    public function persona()
+    {
+        return $this->hasOne('App\Models\Persona', 'id', 'id_persona');
     }
-
+    public function devoluciones()
+    {
+        return $this->hasMany(Devolucion::class, 'usuario_devolucion');
+    }
 
     /**
      * The attributes that should be cast.
