@@ -76,8 +76,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('/asignacion', AsignacionController::class);
     Route::resource('/salida_revision', SalidaRevisionController::class);
     Route::resource('/bajainventario', BajaInventarioController::class);
-    Route::resource('motivo_devolucion', 'MotivoDevolucionController'::class);
-    Route::resource('devolucion', 'DevolucionController'::class);
+    Route::resource('/motivo_devolucion', MotivoDevolucionController::class);
+    Route::resource('/devolucion', DevolucionController::class);
 
 
 
