@@ -21,7 +21,6 @@
                 <td><b>Equipo</b></td>
                 <td><b>Motivo</b></td>
                 <td><b>Fecha devolución</b></td>
-                <td><b>Usuario</b></td>
                 <td><b>Estado</b></td>
                 <td><b>Opciones</b></td>
             </tr>
@@ -34,7 +33,6 @@
                 <td>{{$devolucion->detalleAsignacion->inventario->equipo->nombre}}</td>
                 <td>{{$devolucion->motivo->nombre}}</td>
                 <td>{{$devolucion->fecha_devolucion}}</td>
-                <td>{{$devolucion->usuario->name}}</td>
                 <td>@if($devolucion->estado==0)
                     <label for="" style="color:brown">Inactivo</label>
                     @else

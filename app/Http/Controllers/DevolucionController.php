@@ -25,7 +25,7 @@ class DevolucionController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->input('per_page', 10);
-        $devoluciones = Devolucion::with(['detalleAsignacion', 'motivo', 'usuario'])
+        $devoluciones = Devolucion::with(['detalleAsignacion', 'motivo'])
             ->paginate($perPage);
         return view('admin/devolucion/index', compact('devoluciones', 'perPage'));
     }
@@ -55,7 +55,6 @@ class DevolucionController extends Controller
         $devolucion->id_detalle_asignacion = $request->id_detalle_asignacion;
         $devolucion->id_motivo_devolucion = $request->id_motivo_devolucion;
         $devolucion->fecha_devolucion = $request->fecha_devolucion;
-        $devolucion->usuario_devolucion = Auth::id();
         $devolucion->observaciones = $request->observaciones;
         $devolucion->save();
 
