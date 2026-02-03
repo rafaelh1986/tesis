@@ -97,6 +97,15 @@
                 </a>
             </li>
             @endcan
+            @can('devolucion.index')
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('devolucion.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Devolución</span>
+                </a>
+            </li>
+            @endcan
             @can('inventario.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('inventario.index')}}"
@@ -202,6 +211,15 @@
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-user-friends"></i>
                     <span>Baja de inventario</span>
+                </a>
+            </li>
+            @endcan
+            @can('motivo_devolucion.index')
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('motivo_devolucion.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-user-friends"></i>
+                    <span>Motivo de devolución</span>
                 </a>
             </li>
             @endcan

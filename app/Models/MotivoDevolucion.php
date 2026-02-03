@@ -9,7 +9,7 @@ class MotivoDevolucion extends Model
 {
     use HasFactory;
 
-    protected $table = "motivos_devolucion";
+    protected $table = "motivo_devolucion";
     protected $fillable = ['nombre', 'descripcion', 'estado', 'created_at', 'updated_at'];
 
     public function devoluciones()

@@ -33,7 +33,7 @@ class MotivoDevolucionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255|unique:motivos_devolucion,nombre',
+            'nombre' => 'required|string|max:255|unique:motivo_devolucion,nombre',
             'descripcion' => 'nullable|string',
         ]);
         
@@ -66,7 +66,7 @@ class MotivoDevolucionController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nombre' => 'required|string|max:255|unique:motivos_devolucion,nombre,' . $id,
+            'nombre' => 'required|string|max:255|unique:motivo_devolucion,nombre,' . $id,
             'descripcion' => 'nullable|string',
         ]);
         

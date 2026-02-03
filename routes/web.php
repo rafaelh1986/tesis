@@ -111,8 +111,8 @@ Route::middleware('auth')->group(function () {
     Route::get('asignacion/{id}/notaAsignacion', [AsignacionController::class, 'notaAsignacion'])->name('asignacion.notaAsignacion');
     Route::get('asignacion/listado/asignaciones', [AsignacionController::class, 'listadoAsignaciones'])->name('asignacion.listado.asignaciones');
     Route::get('asignacion/filtros-por-empleado', [AsignacionController::class, 'filtrosPorEmpleado'])->name('asignacion.filtros_por_empleado');
-    Route::get('asignacion/tipos-por-empleado', [App\Http\Controllers\AsignacionController::class, 'tiposPorEmpleado'])->name('asignacion.tipos_por_empleado');
-    Route::get('asignacion/equipos-por-tipo', [App\Http\Controllers\AsignacionController::class, 'equiposPorTipo'])->name('asignacion.equipos_por_tipo');
+    Route::get('asignacion/tipos-por-empleado', [AsignacionController::class, 'tiposPorEmpleado'])->name('asignacion.tipos_por_empleado');
+    Route::get('asignacion/equipos-por-tipo', [AsignacionController::class, 'equiposPorTipo'])->name('asignacion.equipos_por_tipo');
     Route::get('asignacion/exportar/pdf', [AsignacionController::class, 'exportarPDF'])->name('asignacion.exportar_pdf');
 
 
