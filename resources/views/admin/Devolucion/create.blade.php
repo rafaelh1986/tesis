@@ -32,7 +32,7 @@
                 @foreach($detalles_asignacion as $detalle)
                 <option value="{{$detalle->id}}">
                     {{$detalle->asignacion->empleado->persona->nombres}} {{$detalle->asignacion->empleado->persona->apellidos}} - 
-                    {{$detalle->inventario->equipo->nombre}}
+                    {{$detalle->inventario->equipo->modelo->nombre_comercial}} {{$detalle->inventario->numero_serie}}
                 </option>
                 @endforeach
             </select>
@@ -41,7 +41,7 @@
             <label for="id_motivo_devolucion">Motivo de devolución</label>
             <select name="id_motivo_devolucion" id="id_motivo_devolucion" class="form-control" required>
                 <option value="">-- Seleccionar --</option>
-                @foreach($motivos_devolucion as $motivo)
+                @foreach($motivo_devolucion as $motivo)
                 <option value="{{$motivo->id}}">{{$motivo->nombre}}</option>
                 @endforeach
             </select>

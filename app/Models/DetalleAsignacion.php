@@ -26,4 +26,24 @@ class DetalleAsignacion extends Model
     {
         return $this->hasMany(Devolucion::class, 'id_detalle_asignacion');
     }
+
+    public function scopeActivas($query)
+    {
+        return $query->whereDoesntHave('devoluciones', function ($q) {
+            $q->where('estado', 1); // solo devoluciones activas
+        });
+    }
+
+    public function scopeInactivas($query)
+    {
+        return $query->whereHas('devoluciones', function ($q) {
+            $q->where('estado', 1);
+        });
+    }
+
+
+    public function estaActiva(): bool
+    {
+        return !$this->devoluciones()->where('estado', 1)->exists();
+    }
 };
