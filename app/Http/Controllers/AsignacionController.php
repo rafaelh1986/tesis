@@ -11,7 +11,7 @@ use App\Models\Inventario;
 use App\Models\TipoEquipo;
 use App\Models\Equipo;
 
-use Barryvdh\DomPDF\Facade\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -337,7 +337,7 @@ class AsignacionController extends Controller
         $fechaHora = Carbon::now()->format('d/m/Y H:i');
 
 
-        $pdf = PDF::loadView('admin.asignacion.export_pdf', compact('detalles', 'fechaHora'));
+        $pdf = Pdf::loadView('admin.asignacion.export_pdf', compact('detalles', 'fechaHora'));
         return $pdf->download('asignaciones.pdf');
     }
 
