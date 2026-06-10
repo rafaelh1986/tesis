@@ -67,7 +67,7 @@ $asignacionBloqueada = $asignacion->estado == 1;
         </div>
         <div class="col-md-2">
             <button type="button" id="btn-agregar" class="btn btn-sm btn-primary" disabled
-                @if($asignacionBloqueada) disabled @endif>
+                @if($asignacion->estado == 2) disabled @endif>
                 <i class="fas fa-plus"></i> Agregar
             </button>
         </div>
@@ -129,9 +129,9 @@ $asignacionBloqueada = $asignacion->estado == 1;
                             }}
                     </td>
                     <td>
-                        <a href="{{route('asignacion.destroyDetalle', $detalleAsignacion->id)}}"
+                        <!--<a href="{{route('asignacion.destroyDetalle', $detalleAsignacion->id)}}"
                             class="btn btn-sm btn-danger" onclick="return confirm('¿Estas seguro?')">
-                            <i class="fas fa-trash"></i>
+                            <i class="fas fa-trash"></i>-->
                         </a>
                     </td>
                 </tr>
@@ -154,32 +154,41 @@ $asignacionBloqueada = $asignacion->estado == 1;
 </form>
 <div class="row">
     <div class="col-md-8"></div>
-    <div class="col-md-2">
+    <!--<div class="col-md-2">
         <a href="{{ route('asignacion.cancelar', $asignacion->id) }}"
             class="btn btn-danger"
             id="btn-quitar-todo"
             onclick="return confirmarQuitarTodo();"
             @if($asignacionBloqueada) disabled @endif>
-            Quitar todo
+            Quitar todos
         </a>
-    </div>
+    </div>-->
     <div class="col-md-2">
         <form action="{{route('asignacion.update', $asignacion->id)}}" method="post">
             @csrf
             @method('PUT')
             <input type="hidden" name="id" value="{{$asignacion->id}}">
-            <button type="submit" class="btn btn-block btn-success" @if($asignacionBloqueada) disabled @endif>
+            <button type="submit" class="btn btn-block btn-success" @if($asignacion->estado != 0) disabled @endif id="btn-confirmar">
                 <i class="fas fa-save"></i> Confirmar
             </button>
         </form>
     </div>
 </div>
 <script>
-    const asignacionBloqueada = {{ $asignacionBloqueada ? 'true' : 'false' }};
-    // Habilita el botón solo si hay equipo seleccionado
+    const asignacionBloqueada = {
+        {
+            $asignacionBloqueada ? 'true' : 'false'
+        }
+    };
+    const asignacionInactiva = {
+        {
+            $asignacion - > estado == 2 ? 'true' : 'false'
+        }
+    };
+    // Habilita el botón solo si hay equipo seleccionado y la asignación no está bloqueada/inactiva
     document.getElementById('id_inventario').addEventListener('change', function() {
         const btnAgregar = document.getElementById('btn-agregar');
-        if (asignacionBloqueada) {
+        if (asignacionBloqueada || asignacionInactiva) {
             btnAgregar.disabled = true;
         } else {
             btnAgregar.disabled = !this.value;
@@ -189,7 +198,7 @@ $asignacionBloqueada = $asignacion->estado == 1;
     let equiposTemporales = [];
 
     document.getElementById('btn-agregar').addEventListener('click', function() {
-        if (asignacionBloqueada) return;
+        if (asignacionBloqueada || asignacionInactiva) return;
         const select = document.getElementById('id_inventario');
         const id = select.value;
         const text = select.options[select.selectedIndex].text;
@@ -254,7 +263,7 @@ $asignacionBloqueada = $asignacion->estado == 1;
         document.getElementById('tabla-temporal').style.display = 'none';
         document.getElementById('form-guardar-temporal').style.display = 'none';
         document.getElementById('btn-agregar').disabled = true;
-        document.querySelector('button[type="submit"].btn-success').disabled = true;
+        document.getElementById('btn-guardar').disabled = true;
         document.getElementById('btn-cancelar').disabled = true;
     });
 
@@ -267,9 +276,5 @@ $asignacionBloqueada = $asignacion->estado == 1;
         document.getElementById('btn-agregar').disabled = true;
         this.querySelector('button[type="submit"]').disabled = true;
     });
-
-    function confirmarQuitarTodo() {
-        return confirm('¡Advertencia!\n\nEsta acción eliminará TODAS las asignaciones de este usuario.\n¿Desea continuar?');
-    }
 </script>
 @endsection

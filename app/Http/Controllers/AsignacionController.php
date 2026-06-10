@@ -79,7 +79,7 @@ class AsignacionController extends Controller
         // Cambia el estado del inventario a asignado
         $inventario = \App\Models\Inventario::find($id_inventario);
         if ($inventario) {
-            $inventario->estado = 2; // 2 = asignado (ajusta según tu lógica)
+            $inventario->estado = 2; // 2 = asignado
             $inventario->save();
         }
     }
@@ -139,6 +139,7 @@ class AsignacionController extends Controller
         }
 
         // Cambiar estado de los detalles y de los inventarios asociados
+        /*
         foreach ($asignacion->detalleAsignaciones as $detalle) {
             if ($detalle->estado == 1) { // Solo si está asignado
                 $detalle->estado = 0;
@@ -150,9 +151,9 @@ class AsignacionController extends Controller
                     $inventario->save();
                 }
             }
-        }
+        }*/
         // Cambiar estado de la asignación a eliminado
-        $asignacion->estado = 0;
+        $asignacion->estado = 2; // 2 = inactiva
         $asignacion->save();
 
         return redirect()->route('asignacion.index');
@@ -198,17 +199,6 @@ class AsignacionController extends Controller
         $asignacion->save();
 
         return redirect()->route('asignacion.index');
-    }
-
-    public function notaAsignacion($id)
-    {
-
-        $asignacion = Asignacion::find($id);
-        $detalleAsignaciones = DetalleAsignacion::where('id_asignacion', $id)->where('estado', 1)->get();
-        //dd($detalleAsignaciones);
-        $pdf = Pdf::loadView('admin.asignacion.nota_asignacion', compact('asignacion', 'detalleAsignaciones'));
-        return $pdf->download('notaAsignacion.pdf');
-        //return view ('admin.asignacion.nota_asignacion',compact('asignacion','detalleAsignaciones'));
     }
 
     public function notaAsignacionPDF($id)

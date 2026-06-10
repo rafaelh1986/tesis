@@ -108,7 +108,7 @@ Route::middleware('auth')->group(function () {
     Route::get('asignacion/{id}/cancelar', [AsignacionController::class, 'cancelar'])->name('asignacion.cancelar');
     Route::get('asignacion/{id}/destroyDetalle', [AsignacionController::class, 'destroyDetalle'])->name('asignacion.destroyDetalle');
 
-    Route::get('asignacion/{id}/notaAsignacion', [AsignacionController::class, 'notaAsignacion'])->name('asignacion.notaAsignacion');
+    Route::get('asignacion/{id}/notaAsignacion', [AsignacionController::class, 'notaAsignacionPDF'])->name('asignacion.notaAsignacion');
     Route::get('asignacion/listado/asignaciones', [AsignacionController::class, 'listadoAsignaciones'])->name('asignacion.listado.asignaciones');
     Route::get('asignacion/filtros-por-empleado', [AsignacionController::class, 'filtrosPorEmpleado'])->name('asignacion.filtros_por_empleado');
     Route::get('asignacion/tipos-por-empleado', [AsignacionController::class, 'tiposPorEmpleado'])->name('asignacion.tipos_por_empleado');

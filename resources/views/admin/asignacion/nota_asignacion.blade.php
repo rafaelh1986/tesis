@@ -30,8 +30,12 @@
     </div>
     <div style="margin-bottom: 8px">
         <label for=""><b>Asignado a: </b>{{$asignacion->empleado->persona->nombres.' '.$asignacion->empleado->persona->apellidos}}</label>
-        <label style="float: right" for=""><b>Nro de Asignación: </b>{{$asignacion->id}}</label>                                            
+        <label style="float: right" for=""><b>Nro de Asignación: </b>{{$asignacion->id}}</label> 
     </div>
+    <div style="margin-bottom: 8px">
+        <label style="float: right" for=""><b>Estado de Asignación: </b>{{$asignacion->estado == 0 ? 'Pendiente' : ($asignacion->estado == 1 ? 'Confirmada' : 'Inactiva')}}</label> 
+    </div>
+    
     <div><h2> Asignaciones</h2></div>
     <br>
     <div class="row">

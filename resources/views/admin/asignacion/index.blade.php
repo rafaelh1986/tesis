@@ -17,7 +17,7 @@
         <thead>
             <tr>
                 <td><b>Asignado</b></td>
-                <td><b>fecha asignación</b></td>
+                <td><b>Fecha de asignación</b></td>
                 <td><b>Opciones</b></td>
             </tr>
         </thead>
@@ -31,22 +31,19 @@
                         class="btn btn-sm btn-info">
                         <i class="fas fa-pen"></i>
                     </a>
-                    @php
-                    if($asignacion->estado==0)
-                    {
-                    $icono_delete="redo";
-                    $bg_btn = "warning";
-                    $msj = "restaurar";
-                    }
-                    else{
-                    $icono_delete="trash";
-                    $bg_btn = "danger";
-                    $msj = "eliminar";
-                    }
-                    @endphp
-                    <a href="{{route('asignacion.destroy' , $asignacion->id)}}"
-                        class="btn btn-sm btn-{{$bg_btn}}" onclick="return confirm('¿Estas seguro?')">
-                        <i class="fas fa-{{$icono_delete}}"></i>
+
+                    @if ($asignacion->estado == 2)
+                    <button type="button" class="btn btn-sm btn-danger" disabled>
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    @else
+                    <a href="{{ route('asignacion.destroy', $asignacion->id) }}"
+                        class="btn btn-sm btn-danger"
+                        onclick="return confirm('¿Estas seguro?')">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                    @endif
+
                     </a>
                     <a href="{{route('asignacion.notaAsignacion' , $asignacion->id)}}"
                         class="btn btn-sm btn-success">
