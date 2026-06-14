@@ -66,7 +66,7 @@ $asignacionBloqueada = $asignacion->estado == 1;
             </select>
         </div>
         <div class="col-md-2">
-            <button type="button" id="btn-agregar" class="btn btn-sm btn-primary" disabled
+            <button type="button" id="btn-agregar" class="btn btn-sm btn-primary"
                 @if($asignacion->estado == 2) disabled @endif>
                 <i class="fas fa-plus"></i> Agregar
             </button>
@@ -141,16 +141,16 @@ $asignacionBloqueada = $asignacion->estado == 1;
     </div>
 </div>
 <hr>
-<form id="form-guardar-temporal" action="{{ route('asignacion.storeDetalle') }}" method="POST" style="display:none;">
+<form id="form-guardar-temporal" style="display:none;">
     @csrf
     <input type="hidden" name="id_asignacion" value="{{ $asignacion->id }}">
     <div id="inputs-equipos"></div>
-    <button type="submit" class="btn btn-success" id="btn-guardar" disabled @if($asignacionBloqueada) disabled @endif>
+    <button type="button" class="btn btn-success" id="btn-guardar" disabled @if($asignacionBloqueada) disabled @endif>
         <i class="fas fa-save"></i> Guardar
     </button>
-    <button type="button" class="btn btn-danger" id="btn-cancelar" @if($asignacionBloqueada) disabled @endif>
+    <!--<button type="button" class="btn btn-danger" id="btn-cancelar" @if($asignacionBloqueada) disabled @endif>
         <i class="fas fa-ban"></i> Cancelar
-    </button>
+    </button>-->
 </form>
 <div class="row">
     <div class="col-md-8"></div>
@@ -164,27 +164,25 @@ $asignacionBloqueada = $asignacion->estado == 1;
         </a>
     </div>-->
     <div class="col-md-2">
-        <form action="{{route('asignacion.update', $asignacion->id)}}" method="post">
+        <form id="form-confirmar" action="{{route('asignacion.update', $asignacion->id)}}" method="post">
             @csrf
             @method('PUT')
             <input type="hidden" name="id" value="{{$asignacion->id}}">
-            <button type="submit" class="btn btn-block btn-success" @if($asignacion->estado != 0) disabled @endif id="btn-confirmar">
+            <div id="confirm-inputs-equipos"></div>
+            <button type="submit" class="btn btn-block btn-success" 
+                @if($asignacion->estado != 0 || !$tieneEquiposAsignados) disabled @endif id="btn-confirmar">
                 <i class="fas fa-save"></i> Confirmar
             </button>
         </form>
     </div>
 </div>
 <script>
-    const asignacionBloqueada = {
-        {
-            $asignacionBloqueada ? 'true' : 'false'
-        }
-    };
-    const asignacionInactiva = {
-        {
-            $asignacion - > estado == 2 ? 'true' : 'false'
-        }
-    };
+    const asignacionBloqueada = {{ $asignacionBloqueada ? 'true' : 'false' }};
+    const asignacionInactiva = {{ $asignacion->estado == 2 ? 'true' : 'false' }};
+    
+    // Inicializa el estado del botón al cargar
+    document.getElementById('btn-agregar').disabled = true;
+
     // Habilita el botón solo si hay equipo seleccionado y la asignación no está bloqueada/inactiva
     document.getElementById('id_inventario').addEventListener('change', function() {
         const btnAgregar = document.getElementById('btn-agregar');
@@ -238,10 +236,25 @@ $asignacionBloqueada = $asignacion->estado == 1;
             inputsDiv.innerHTML += `<input type="hidden" name="id_inventario[]" value="${equipo.id}">`;
         });
     }
+    function syncConfirmInputs() {
+    const confirmInputs = document.getElementById('confirm-inputs-equipos');
+    confirmInputs.innerHTML = equiposTemporales
+        .map(equipo => `<input type="hidden" name="id_inventario[]" value="${equipo.id}">`)
+        .join('');
+    document.getElementById('btn-confirmar').disabled =
+        asignacionBloqueada || asignacionInactiva || equiposTemporales.length === 0;
+}
+
+document.getElementById('btn-guardar').addEventListener('click', function() {
+    if (equiposTemporales.length === 0) return;
+    syncConfirmInputs();
+    // opcional: mantener la tabla visible para revisión
+});
 
     window.quitarEquipo = function(idx) {
         equiposTemporales.splice(idx, 1);
         renderTablaTemporal();
+        syncConfirmInputs();
         if (equiposTemporales.length === 0) {
             document.getElementById('tabla-temporal').style.display = 'none';
             document.getElementById('form-guardar-temporal').style.display = 'none';
@@ -253,6 +266,7 @@ $asignacionBloqueada = $asignacion->estado == 1;
     document.getElementById('btn-cancelar').addEventListener('click', function() {
         equiposTemporales = [];
         renderTablaTemporal();
+        syncConfirmInputs();
         document.getElementById('tabla-temporal').style.display = 'none';
         document.getElementById('form-guardar-temporal').style.display = 'none';
         document.getElementById('btn-guardar').disabled = true;

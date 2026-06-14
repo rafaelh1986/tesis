@@ -19,6 +19,7 @@
                 <td><b>Id</b></td>
                 <td><b>Empleado</b></td>
                 <td><b>Equipo</b></td>
+                <td><b>Serie</b></td>
                 <td><b>Motivo</b></td>
                 <td><b>Fecha devolución</b></td>
                 <td><b>Estado</b></td>
@@ -30,7 +31,8 @@
             <tr>
                 <td>{{$devolucion->id}}</td>
                 <td>{{$devolucion->detalleAsignacion->asignacion->empleado->persona->nombres}} {{$devolucion->detalleAsignacion->asignacion->empleado->persona->apellidos}}</td>
-                <td>{{$devolucion->detalleAsignacion->inventario->equipo->nombre}}</td>
+                <td>{{$devolucion->detalleAsignacion->inventario->equipo->modelo->nombre_comercial}}</td>
+                <td>{{$devolucion->detalleAsignacion->inventario->numero_serie}}</td>
                 <td>{{$devolucion->motivo->nombre}}</td>
                 <td>{{$devolucion->fecha_devolucion}}</td>
                 <td>@if($devolucion->estado==0)

@@ -114,15 +114,38 @@ class AsignacionController extends Controller
         }
         $inventarios = Inventario::where('estado', 1)->get();
         $detalleAsignaciones = DetalleAsignacion::where('id_asignacion', $id)->where('estado', 1)->get();
+        $tieneEquiposAsignados = $detalleAsignaciones->count() > 0; //nuevo
         return view('admin/asignacion/edit')->with('asignacion', $asignacion)
-            ->with('inventarios', $inventarios)->with('detalleAsignaciones', $detalleAsignaciones);
+            ->with('inventarios', $inventarios)
+            ->with('detalleAsignaciones', $detalleAsignaciones)
+            ->with('tieneEquiposAsignados', $tieneEquiposAsignados);
     }
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'id_inventario' => 'required|array|min:1',
+            'id_inventario.*' => 'required|exists:inventario,id',
+        ]);
         //dd($request);
         $asignacion = Asignacion::find($id);
         if (!$asignacion) {
             return redirect()->route('asignacion.index')->with('error', 'Asignación no encontrada.');
+        }
+        foreach ($request->id_inventario as $id_inventario) {
+            if (!$this->verificarItemExistenteEnAsignacion($id_inventario, $id)) {
+                $detalle = new DetalleAsignacion();
+                $detalle->id_inventario = $id_inventario;
+                $detalle->id_asignacion = $id;
+                $detalle->estado = 1; // Asignado
+                $detalle->save();
+
+                // Cambia el estado del inventario a asignado
+                $inventario = Inventario::find($id_inventario);
+                if ($inventario) {
+                    $inventario->estado = 2; // 2 = asignado
+                    $inventario->save();
+                }
+            }
         }
         $asignacion->estado = 1;
         $asignacion->save();
