@@ -40,6 +40,34 @@ class DevolucionController extends Controller
 
     public function create()
     {
+        $detalles_asignacion = DetalleAsignacion::activas()
+            ->with(['asignacion.empleado.persona', 'inventario.equipo.modelo'])
+            ->get();
+
+        $empleadosConEquipos = $detalles_asignacion
+            ->groupBy(fn($detalle) => $detalle->asignacion->id_empleado)
+            ->map(function ($detalles) {
+                $empleado = $detalles->first()->asignacion->empleado;
+                return [
+                    'empleado_id' => $empleado->id,
+                    'nombre' => $empleado->persona->nombres . ' ' . $empleado->persona->apellidos,
+                    'equipos' => $detalles
+                    ->unique(fn($detalle) => $detalle->id_inventario) // 👈 Elimina duplicados por inventario
+                    ->map(fn($detalle) => [
+                        'detalle_id' => $detalle->id,
+                        'texto' => $detalle->inventario->equipo->modelo->nombre_comercial
+                            . ' - ' . $detalle->inventario->numero_serie,
+                    ])
+                    ->values(),
+                ];
+            })
+            ->values();
+
+        $motivo_devolucion = MotivoDevolucion::where('estado', 1)->get();
+
+        return view('admin.devolucion.create', compact('empleadosConEquipos', 'motivo_devolucion'));
+    }
+    /*{
 
         // Mostrar solo asignaciones ACTIVAS (sin devolución activa)
         $detalles_asignacion = DetalleAsignacion::activas()
@@ -51,7 +79,7 @@ class DevolucionController extends Controller
         return view('admin/devolucion/create', compact('detalles_asignacion', 'motivo_devolucion'));
     }
 
-    public function store(Request $request)
+    /*public function store(Request $request)
     {
         $request->validate([
             'id_detalle_asignacion' => 'required|exists:detalle_asignacion,id',
@@ -85,6 +113,52 @@ class DevolucionController extends Controller
             if ($inventario) {
                 $inventario->estado = 1; // disponible
                 $inventario->save();
+            }
+        }
+
+        return redirect()
+            ->route('devolucion.index')
+            ->with('success', '¡Devolución registrada satisfactoriamente!');
+    }*/
+    public function store(Request $request)
+    {
+        $request->validate([
+            'id_detalle_asignacion' => 'required|exists:detalle_asignacion,id',
+            'id_motivo_devolucion' => 'required|exists:motivo_devolucion,id',
+            'fecha_devolucion' => 'required|date',
+            'observaciones' => 'nullable|string',
+        ]);
+
+        $devolucion = new Devolucion();
+        $devolucion->id_detalle_asignacion  = $request->id_detalle_asignacion;
+        $devolucion->id_motivo_devolucion   = $request->id_motivo_devolucion;
+        $devolucion->fecha_devolucion       = $request->fecha_devolucion;
+        $devolucion->observaciones          = $request->observaciones;
+        $devolucion->estado                 = 1; // activa
+        $devolucion->save();
+
+        $detalle = DetalleAsignacion::with('asignacion')->find($request->id_detalle_asignacion);
+
+        if ($detalle && $detalle->id_inventario) {
+            $inventario = Inventario::find($detalle->id_inventario);
+            if ($inventario) {
+                $inventario->estado = 1; // disponible
+                $inventario->save();
+            }
+        }
+
+        if ($detalle && $detalle->asignacion) {
+            $asignacion = $detalle->asignacion;
+
+            $equiposAsignados = DetalleAsignacion::where('id_asignacion', $asignacion->id)
+                ->whereDoesntHave('devoluciones', function ($q) {
+                    $q->where('estado', 1);
+                })
+                ->count();
+
+            if ($equiposAsignados === 0) {
+                $asignacion->estado = 2; // inactiva
+                $asignacion->save();
             }
         }
 

@@ -18,6 +18,7 @@
             <tr>
                 <td><b>Asignado</b></td>
                 <td><b>Fecha de asignación</b></td>
+                <td><b>Estado</b></td>
                 <td><b>Opciones</b></td>
             </tr>
         </thead>
@@ -25,7 +26,16 @@
             @foreach($asignaciones as $asignacion)
             <tr>
                 <td>{{$asignacion->empleado->persona->nombres}} {{$asignacion->empleado->persona->apellidos}}</td>
-                <td>{{$asignacion->fecha_asignacion}}</td>
+                <td>{{ \Carbon\Carbon::parse($asignacion->fecha_asignacion)->format('d/m/Y') }}</td>
+                <td>
+                    @if ($asignacion->estado == 1)
+                    <span class="badge badge-success">Activo</span>
+                    @elseif ($asignacion->estado == 2)
+                    <span class="badge badge-danger">Inactivo</span>
+                    @else
+                    <span class="badge badge-secondary">Pendiente</span>
+                    @endif
+                </td>
                 <td>
                     <a href="{{route('asignacion.edit' , $asignacion->id)}}"
                         class="btn btn-sm btn-info">

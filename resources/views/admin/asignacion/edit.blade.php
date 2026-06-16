@@ -148,9 +148,9 @@ $asignacionBloqueada = $asignacion->estado == 1;
     <button type="button" class="btn btn-success" id="btn-guardar" disabled @if($asignacionBloqueada) disabled @endif>
         <i class="fas fa-save"></i> Guardar
     </button>
-    <!--<button type="button" class="btn btn-danger" id="btn-cancelar" @if($asignacionBloqueada) disabled @endif>
+    <button type="button" class="btn btn-danger" id="btn-cancelar" @if($asignacionBloqueada) disabled @endif>
         <i class="fas fa-ban"></i> Cancelar
-    </button>-->
+    </button>
 </form>
 <div class="row">
     <div class="col-md-8"></div>
