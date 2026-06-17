@@ -29,9 +29,10 @@ class DetalleAsignacion extends Model
 
     public function scopeActivas($query)
     {
-        return $query->whereDoesntHave('devoluciones', function ($q) {
-            $q->where('estado', 1); // solo devoluciones activas
-        });
+        return $query->where('estado', 1) // Solo detalles con estado activo
+            ->whereDoesntHave('devoluciones', function ($q) {
+                $q->where('estado', 1); // solo devoluciones activas
+            });
     }
 
     public function scopeInactivas($query)

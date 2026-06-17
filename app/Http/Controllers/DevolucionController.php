@@ -41,6 +41,7 @@ class DevolucionController extends Controller
     public function create()
     {
         $detalles_asignacion = DetalleAsignacion::activas()
+            ->whereHas('inventario')
             ->with(['asignacion.empleado.persona', 'inventario.equipo.modelo'])
             ->get();
 
@@ -138,6 +139,11 @@ class DevolucionController extends Controller
         $devolucion->save();
 
         $detalle = DetalleAsignacion::with('asignacion')->find($request->id_detalle_asignacion);
+
+        if ($detalle) {
+            $detalle->estado = 0; // marcar el detalle como devuelto / inactivo
+            $detalle->save();
+        }
 
         if ($detalle && $detalle->id_inventario) {
             $inventario = Inventario::find($detalle->id_inventario);

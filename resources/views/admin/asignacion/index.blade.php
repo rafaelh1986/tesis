@@ -16,6 +16,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <td><b>ID</b></td>
                 <td><b>Asignado</b></td>
                 <td><b>Fecha de asignación</b></td>
                 <td><b>Estado</b></td>
@@ -24,7 +25,8 @@
         </thead>
         <tbody>
             @foreach($asignaciones as $asignacion)
-            <tr>
+            <tr>    
+                <td>{{$asignacion->id}}</td>
                 <td>{{$asignacion->empleado->persona->nombres}} {{$asignacion->empleado->persona->apellidos}}</td>
                 <td>{{ \Carbon\Carbon::parse($asignacion->fecha_asignacion)->format('d/m/Y') }}</td>
                 <td>
