@@ -49,6 +49,17 @@ class AsignacionController extends Controller
             'id_empleado' => 'required|exists:empleado,id',
             'fecha_asignacion' => 'required|date',
         ]);
+
+        $empleado = Empleado::find($request->id_empleado);
+        $hoy = date('Y-m-d');
+        $rules = ['required', 'date', 'after_or_equal:' . $empleado->fecha_ingreso, 'before_or_equal:' . $hoy];
+        $request->validate([
+            'fecha_asignacion' => $rules,
+        ], [
+            'fecha_asignacion.after_or_equal' => 'La fecha de asignación no puede ser anterior a la fecha de ingreso del empleado.',
+            'fecha_asignacion.before_or_equal' => 'La fecha de asignación no puede ser mayor a la fecha actual.',
+        ]);
+
         $asignacion = new Asignacion();
         $asignacion->id_empleado = $request->id_empleado;
         $asignacion->fecha_asignacion = $request->fecha_asignacion;
@@ -161,21 +172,7 @@ class AsignacionController extends Controller
             return redirect()->route('asignacion.index')->with('error', 'Asignación no encontrada.');
         }
 
-        // Cambiar estado de los detalles y de los inventarios asociados
-        /*
-        foreach ($asignacion->detalleAsignaciones as $detalle) {
-            if ($detalle->estado == 1) { // Solo si está asignado
-                $detalle->estado = 0;
-                $detalle->save();
-
-                $inventario = Inventario::find($detalle->id_inventario);
-                if ($inventario) {
-                    $inventario->estado = 1; // disponible
-                    $inventario->save();
-                }
-            }
-        }*/
-        // Cambiar estado de la asignación a eliminado
+        // Cambia estado de la asignación a eliminado
         $asignacion->estado = 2; // 2 = inactiva
         $asignacion->save();
 
@@ -185,7 +182,7 @@ class AsignacionController extends Controller
     public function destroyDetalle($id)
     {
         $detalle = DetalleAsignacion::find($id);
-        // Cambiar estado del inventario a disponible (por ejemplo, 1)
+        // Cambia estado del inventario a disponible (por ejemplo, 1)
         if ($detalle && $detalle->estado == 1) { // Solo si está asignado
             $detalle->estado = 0;
             $detalle->save();

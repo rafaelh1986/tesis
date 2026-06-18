@@ -52,6 +52,7 @@ class DevolucionController extends Controller
                 return [
                     'empleado_id' => $empleado->id,
                     'nombre' => $empleado->persona->nombres . ' ' . $empleado->persona->apellidos,
+                    'fecha_ingreso' => $empleado->fecha_ingreso,
                     'equipos' => $detalles
                     ->unique(fn($detalle) => $detalle->id_inventario) // 👈 Elimina duplicados por inventario
                     ->map(fn($detalle) => [
@@ -129,6 +130,19 @@ class DevolucionController extends Controller
             'fecha_devolucion' => 'required|date',
             'observaciones' => 'nullable|string',
         ]);
+
+        // Validar que la fecha de devolución no sea anterior a la fecha de ingreso del empleado
+        $detalle = DetalleAsignacion::with('asignacion.empleado')->find($request->id_detalle_asignacion);
+        if ($detalle && $detalle->asignacion && $detalle->asignacion->empleado && $detalle->asignacion->empleado->fecha_ingreso) {
+            $min = $detalle->asignacion->empleado->fecha_ingreso;
+            $hoy = date('Y-m-d');
+            $request->validate([
+                'fecha_devolucion' => ['required', 'date', 'after_or_equal:' . $min, 'before_or_equal:' . $hoy],
+            ], [
+                'fecha_devolucion.after_or_equal' => 'La fecha de devolución no puede ser anterior a la fecha de ingreso del empleado.',
+                'fecha_devolucion.before_or_equal' => 'La fecha de devolución no puede ser mayor a la fecha actual.',
+            ]);
+        }
 
         $devolucion = new Devolucion();
         $devolucion->id_detalle_asignacion  = $request->id_detalle_asignacion;
@@ -214,6 +228,19 @@ class DevolucionController extends Controller
             'fecha_devolucion' => 'required|date',
             'observaciones' => 'nullable|string',
         ]);
+
+        // Validar que la fecha de devolución no sea anterior a la fecha de ingreso del empleado
+        $detalleForValidation = DetalleAsignacion::with('asignacion.empleado')->find($request->id_detalle_asignacion);
+        if ($detalleForValidation && $detalleForValidation->asignacion && $detalleForValidation->asignacion->empleado && $detalleForValidation->asignacion->empleado->fecha_ingreso) {
+            $minUp = $detalleForValidation->asignacion->empleado->fecha_ingreso;
+            $hoyUp = date('Y-m-d');
+            $request->validate([
+                'fecha_devolucion' => ['required', 'date', 'after_or_equal:' . $minUp, 'before_or_equal:' . $hoyUp],
+            ], [
+                'fecha_devolucion.after_or_equal' => 'La fecha de devolución no puede ser anterior a la fecha de ingreso del empleado.',
+                'fecha_devolucion.before_or_equal' => 'La fecha de devolución no puede ser mayor a la fecha actual.',
+            ]);
+        }
 
         $devolucion = Devolucion::find($id);
         if (!$devolucion) {

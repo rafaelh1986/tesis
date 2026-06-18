@@ -1,14 +1,10 @@
 @extends('template.index')
 @section('encabezado')
-<div class="row">
-    <div class="col-md-9">
-        <h4 class="m-0 font-weight-bold text-primary">Asignación</h4>
-    </div>
-    <div class="col-md-3">
-        <a href="{{route('asignacion.create')}}" class="btn btn-sm btn-info btn-block">
-            <i class="fas fa-plus"></i>Agregar
-        </a>
-    </div>
+<div class="d-flex justify-content-between align-items-center">
+    <h4 class="m-0 font-weight-bold text-primary">Asignación</h4>
+    <a href="{{route('asignacion.create')}}" class="btn btn-sm btn-info">
+        <i class="fas fa-plus"></i>Agregar
+    </a>
 </div>
 @endsection
 @section('contenido')
@@ -18,6 +14,7 @@
             <tr>
                 <td><b>ID</b></td>
                 <td><b>Asignado</b></td>
+                <td><b>Área</b></td>
                 <td><b>Fecha de asignación</b></td>
                 <td><b>Estado</b></td>
                 <td><b>Opciones</b></td>
@@ -28,14 +25,15 @@
             <tr>    
                 <td>{{$asignacion->id}}</td>
                 <td>{{$asignacion->empleado->persona->nombres}} {{$asignacion->empleado->persona->apellidos}}</td>
+                <td>{{$asignacion->empleado->area->nombre}}</td>
                 <td>{{ \Carbon\Carbon::parse($asignacion->fecha_asignacion)->format('d/m/Y') }}</td>
                 <td>
                     @if ($asignacion->estado == 1)
-                    <span class="badge badge-success">Activo</span>
+                    <span class="badge badge-success px-3 py-2 fs-6">Activo</span>
                     @elseif ($asignacion->estado == 2)
-                    <span class="badge badge-danger">Inactivo</span>
+                    <span class="badge badge-danger px-3 py-2 fs-6">Inactivo</span>
                     @else
-                    <span class="badge badge-secondary">Pendiente</span>
+                    <span class="badge badge-secondary px-3 py-2 fs-6">Pendiente</span>
                     @endif
                 </td>
                 <td>

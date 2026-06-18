@@ -21,7 +21,7 @@
     </ul>
 </div>
 @endif
-<form action="{{route('devolucion.store')}}" method="post">
+<form id="form-crear-devolucion" action="{{route('devolucion.store')}}" method="post">
     @csrf
     @method('POST')
     <div class="row">
@@ -56,6 +56,7 @@
         <div class="col-md-6">
             <label for="fecha_devolucion">Fecha de devolución</label>
             <input type="date" name="fecha_devolucion" id="fecha_devolucion" class="form-control" value="{{ old('fecha_devolucion') }}" required>
+            <div id="fecha_devolucion_alert" class="alert alert-danger mt-2" role="alert" style="display:none;"></div>
         </div>
     </div>
     <div class="row mt-3">
@@ -75,17 +76,34 @@
     const empleadosConEquipos = @json($empleadosConEquipos);
     const empleadoSelect = document.getElementById('id_empleado');
     const detalleSelect = document.getElementById('id_detalle_asignacion');
+    const fechaDevolucionInput = document.getElementById('fecha_devolucion');
 
-    empleadoSelect.addEventListener('change', function() {
-        const empleadoId = parseInt(this.value);
+    function onEmpleadoChange() {
+        const empleadoId = parseInt(empleadoSelect.value);
         detalleSelect.innerHTML = '<option value="">-- Seleccionar equipo --</option>';
 
         if (!empleadoId || empleadoId === 0) {
+            fechaDevolucionInput.removeAttribute('min');
             return;
         }
 
         const empleado = empleadosConEquipos.find(item => parseInt(item.empleado_id) === empleadoId);
-        
+
+            // Set min and max date for fecha_devolucion based on empleado.fecha_ingreso and today
+            const hoy = new Date().toISOString().slice(0, 10);
+            fechaDevolucionInput.max = hoy;
+            if (empleado && empleado.fecha_ingreso) {
+                fechaDevolucionInput.min = empleado.fecha_ingreso;
+                if (fechaDevolucionInput.value && fechaDevolucionInput.value < empleado.fecha_ingreso) {
+                    fechaDevolucionInput.value = empleado.fecha_ingreso;
+                }
+            } else {
+                fechaDevolucionInput.removeAttribute('min');
+            }
+            if (fechaDevolucionInput.value && fechaDevolucionInput.value > hoy) {
+                fechaDevolucionInput.value = hoy;
+            }
+
         if (!empleado || !empleado.equipos || empleado.equipos.length === 0) {
             detalleSelect.innerHTML = '<option value="">-- No hay equipos asignados --</option>';
             return;
@@ -97,6 +115,41 @@
             option.textContent = equipo.texto;
             detalleSelect.appendChild(option);
         });
+    }
+
+    empleadoSelect.addEventListener('change', onEmpleadoChange);
+    onEmpleadoChange();
+
+    // alerta y validación en cliente
+    const fechaDevolucionAlert = document.getElementById('fecha_devolucion_alert');
+    function validarFechaDevolucion() {
+        const min = fechaDevolucionInput.min || null;
+        const max = fechaDevolucionInput.max || null;
+        const val = fechaDevolucionInput.value;
+        if (!val) {
+            fechaDevolucionAlert.style.display = 'none';
+            return true;
+        }
+        if (min && val < min) {
+            fechaDevolucionAlert.textContent = 'La fecha de devolución no puede ser anterior a la fecha de ingreso del empleado.';
+            fechaDevolucionAlert.style.display = '';
+            return false;
+        }
+        if (max && val > max) {
+            fechaDevolucionAlert.textContent = 'La fecha de devolución no puede ser mayor a la fecha actual.';
+            fechaDevolucionAlert.style.display = '';
+            return false;
+        }
+        fechaDevolucionAlert.style.display = 'none';
+        return true;
+    }
+
+    fechaDevolucionInput.addEventListener('change', validarFechaDevolucion);
+    document.getElementById('form-crear-devolucion').addEventListener('submit', function(e) {
+        if (!validarFechaDevolucion()) {
+            e.preventDefault();
+            fechaDevolucionInput.focus();
+        }
     });
 </script>
 @endsection

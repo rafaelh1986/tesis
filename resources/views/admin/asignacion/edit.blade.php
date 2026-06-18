@@ -247,6 +247,8 @@ $asignacionBloqueada = $asignacion->estado == 1;
 
 document.getElementById('btn-guardar').addEventListener('click', function() {
     if (equiposTemporales.length === 0) return;
+    this.disabled = true;
+    this.innerHTML = '<i class="fas fa-save"></i> Guardando...';
     syncConfirmInputs();
     // opcional: mantener la tabla visible para revisión
 });
