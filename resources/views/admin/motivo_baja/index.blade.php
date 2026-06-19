@@ -17,6 +17,7 @@
         <thead>
             <tr>
                 <td><b>Id</b></td>
+                <td><b>Nombre</b></td>
                 <td><b>Descripción</b></td>
                 <td><b>Estado</b></td>
                 <td><b>Opciones</b></td>
@@ -27,6 +28,7 @@
             <tr>
                 <td>{{$motivo_baja->id}}</td>
                 <td>{{$motivo_baja->nombre}}</td>
+                <td>{{$motivo_baja->descripcion}}</td>
                 <td>@if($motivo_baja->estado==0)
                     <label for="" style="color:brown">Inactivo</label>
                     @else

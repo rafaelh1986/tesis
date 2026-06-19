@@ -1,10 +1,7 @@
 @extends('template.index')
 @section('encabezado')
-<div class="row">
-    <div class="col-md-9">
-        <h4 class="m-0 font-weight-bold text-primary">Listado de asignaciones</h4>
-    </div>
-
+<div class="d-flex justify-content-between align-items-center">
+    <h4 class="m-0 font-weight-bold text-primary">Listado de asignaciones</h4>
 </div>
 @endsection
 @section('contenido')
@@ -41,21 +38,21 @@
     </div>
 </form>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('filtro-asignaciones');
-    const empleadoSelect = document.getElementById('empleado-select');
-    const tipoSelect = document.getElementById('tipo-equipo-select');
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('filtro-asignaciones');
+        const empleadoSelect = document.getElementById('empleado-select');
+        const tipoSelect = document.getElementById('tipo-equipo-select');
 
-    empleadoSelect.addEventListener('change', function() {
-        var empleadoId = this.value;
-        tipoSelect.innerHTML = '<option value="">-- Todos los tipos de equipo --</option>';
-        form.submit();
-    });
+        empleadoSelect.addEventListener('change', function() {
+            var empleadoId = this.value;
+            tipoSelect.innerHTML = '<option value="">-- Todos los tipos de equipo --</option>';
+            form.submit();
+        });
 
-    tipoSelect.addEventListener('change', function() {
-        form.submit();
+        tipoSelect.addEventListener('change', function() {
+            form.submit();
+        });
     });
-});
 </script>
 <div class="table-responsive">
     <table class="table table-bordered">

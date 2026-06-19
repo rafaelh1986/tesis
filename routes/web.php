@@ -118,6 +118,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('rol/permiso', [RoleController::class, 'permiso'])->name('rol.permiso');
     Route::post('usuario/asignar_roles', [UsuarioController::class, 'asignar_roles'])->name('usuario.asignar_roles');
+    Route::post('usuario/update_password', [UsuarioController::class, 'update_password'])->name('usuario.update_password');
 });
 
 

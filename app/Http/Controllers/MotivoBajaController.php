@@ -38,6 +38,7 @@ class MotivoBajaController extends Controller
         ]);
         $motivo_baja = new MotivoBaja();
         $motivo_baja->nombre = $request->nombre;
+        $motivo_baja->descripcion = $request->descripcion;
         $motivo_baja->save();
         return redirect()->route('motivo_baja.index')->with('success', '¡Creado Satisfactoriamente!');
     }
@@ -64,6 +65,7 @@ class MotivoBajaController extends Controller
         ]);
         $motivo_baja = MotivoBaja::find($id);
         $motivo_baja->nombre = $request->nombre;
+        $motivo_baja->descripcion = $request->descripcion;
         $motivo_baja->save();
         return redirect()->route('motivo_baja.index')->with('success', '¡Editado Satisfactoriamente!');
     }

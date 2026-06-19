@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
 use App\Models\User;
 use App\Models\Persona;
 
@@ -94,6 +95,28 @@ class UsuarioController extends Controller
         $usuario->password = bcrypt($password);
         $usuario->save();
         return redirect()->route('usuario.index');
+    }
+
+    public function update_password(Request $request)
+    {
+        $request->validate([
+            'usuario_id' => 'required|exists:users,id',
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                Rules\Password::min(8)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols(),
+            ],
+        ]);
+
+        $usuario = User::findOrFail($request->usuario_id);
+        $usuario->password = bcrypt($request->password);
+        $usuario->save();
+
+        return redirect()->route('usuario.index')->with('success', 'Contraseña actualizada correctamente.');
     }
 
     public function asignar_roles(Request $request)

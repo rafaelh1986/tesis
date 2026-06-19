@@ -1,14 +1,10 @@
 @extends('template.index')
 @section('encabezado')
-<div class="row">
-    <div class="col-md-9">
-        <h4 class="m-0 font-weight-bold text-primary">Crear asignacion</h4>
-    </div>
-    <div class="col-md-3">
-        <a href="{{route('asignacion.index')}}" class="btn btn-sm btn-info btn-block">
-            <i class="fas fa-arrow-left"></i>Volver
-        </a>
-    </div>
+<div class="d-flex justify-content-between align-items-center">
+    <h4 class="m-0 font-weight-bold text-primary">Crear asignacion</h4>
+    <a href="{{route('asignacion.index')}}" class="btn btn-sm btn-info">
+        <i class="fas fa-arrow-left"></i>Volver
+    </a>
 </div>
 @endsection
 @section('contenido')
@@ -79,6 +75,7 @@
 
     // alerta y validación en cliente
     const fechaAsignacionAlert = document.getElementById('fecha_asignacion_alert');
+
     function validarFechaAsignacion() {
         const min = fechaAsignacionInput.min || null;
         const max = fechaAsignacionInput.max || null;

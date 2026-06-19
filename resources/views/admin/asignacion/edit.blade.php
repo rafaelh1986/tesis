@@ -3,15 +3,11 @@
 @php
 $asignacionBloqueada = $asignacion->estado == 1;
 @endphp
-<div class="row">
-    <div class="col-md-9">
+<div class="d-flex justify-content-between align-items-center">
         <h4 class="m-0 font-weight-bold text-primary">Editar asignación</h4>
-    </div>
-    <div class="col-md-3">
-        <a href="{{route('asignacion.index')}}" class="btn btn-sm btn-info btn-block">
+        <a href="{{route('asignacion.index')}}" class="btn btn-sm btn-info">
             <i class="fas fa-arrow-left"></i>Volver
         </a>
-    </div>
 </div>
 @endsection
 @section('contenido')

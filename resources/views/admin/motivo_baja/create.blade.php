@@ -30,6 +30,10 @@
             <input type="text" name="nombre" id="nombre" class="form-control" required>
         </div>
         <div class="col-md-3">
+            <label for="descripcion">Descripción</label>
+            <input type="text" name="descripcion" id="descripcion" class="form-control">
+        </div>
+        <div class="col-md-3">
             <input type="submit" value="Guardar" class="btn btn-success btn-block mt-4">
         </div>
     </div>

@@ -9,5 +9,5 @@ class MotivoBaja extends Model
 {
     use HasFactory;
     protected $table = "motivo_baja";
-    protected $fillable = ['nombre','estado','created_at','updated_at'];
+    protected $fillable = ['nombre','descripcion','estado','created_at','updated_at'];
 }

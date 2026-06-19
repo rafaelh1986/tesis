@@ -31,8 +31,14 @@
                 value="{{$motivo_baja->nombre}}">
         </div>
         <div class="col-md-3">
-            <input type="submit" value="Guardar" class="btn btn-success btn-block mt-4">
+            <label for="descripcion">Descripción</label>
+            <input type="text" name="descripcion" id="descripcion" class="form-control"
+                value="{{$motivo_baja->descripcion}}">
+            
         </div>
+        <div class="col-md-3">
+                <input type="submit" value="Guardar" class="btn btn-success btn-block mt-4">
+            </div>
     </div>
 </form>
 @endsection

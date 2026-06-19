@@ -34,7 +34,7 @@
             <label for="id_motivo_devolucion">Motivo de devolución</label>
             <select name="id_motivo_devolucion" id="id_motivo_devolucion" class="form-control" required>
                 <option value="">-- Seleccionar --</option>
-                @foreach($motivos_devolucion as $motivo)
+                @foreach($motivo_devolucion as $motivo)
                 <option value="{{$motivo->id}}" {{$devolucion->id_motivo_devolucion == $motivo->id ? 'selected' : ''}}>{{$motivo->nombre}}</option>
                 @endforeach
             </select>
