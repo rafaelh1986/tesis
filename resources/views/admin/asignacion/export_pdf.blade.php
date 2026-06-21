@@ -34,6 +34,12 @@
 </head>
 
 <body>
+    @php
+    $empleados = $detalles->map(function ($detalle) {
+    return trim(($detalle->asignacion->empleado->persona->nombres ?? '') . ' ' . ($detalle->asignacion->empleado->persona->apellidos ?? ''));
+    })->filter()->unique();
+    $empleadoUnico = $empleados->count() === 1 ? $empleados->first() : null;
+    @endphp
     <div style="margin-bottom: 24px; display: flex; align-items: flex-start; justify-content: space-between;">
         <img src="{{ public_path('img/logoy.png') }}" alt="Logo" class="logo">
         <div style="text-align: right;">
@@ -42,12 +48,22 @@
                 <strong>Fecha y hora:</strong> {{ $fechaHora }}
             </p>
         </div>
-        <h2 class="titulo">Listado de asignaciones</h2>
     </div>
+
+    <h2 class="titulo">Listado de asignaciones</h2>
+
+    @if($empleadoUnico)
+    <div style="margin-bottom: 8px; text-align: left; font-weight: bold;">
+        Asignado a: {{ $empleadoUnico }}
+    </div>
+    @endif
+    <br>
     <table>
         <thead>
             <tr>
+                @unless($empleadoUnico)
                 <th>Empleado</th>
+                @endunless
                 <th>Tipo de Equipo</th>
                 <th>Equipo</th>
                 <th>Serie</th>
@@ -57,10 +73,12 @@
         <tbody>
             @foreach($detalles as $detalle)
             <tr>
+                @unless($empleadoUnico)
                 <td>
                     {{ $detalle->asignacion->empleado->persona->nombres ?? '-' }}
                     {{ $detalle->asignacion->empleado->persona->apellidos ?? '' }}
                 </td>
+                @endunless
                 <td>{{ $detalle->inventario->equipo->modelo->tipo_equipo->nombre ?? '-' }}</td>
                 <td>{{ $detalle->inventario->equipo->modelo->nombre_comercial ?? '-' }}</td>
                 <td>{{ $detalle->inventario->numero_serie ?? '-' }}</td>

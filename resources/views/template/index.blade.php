@@ -67,7 +67,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('rol.index')}}" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-clipboard-list"></i>
+                    <i class="fas fa-users"></i>
                     <span>Roles</span>
                 </a>
             </li>
@@ -76,7 +76,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('permiso.index')}}" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-clipboard-check"></i>
+                    <i class="fas fa-key"></i>
                     <span>Permisos</span>
                 </a>
             </li>
@@ -86,13 +86,13 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Asignación
+                Gestión
             </div>
             @can('asignacion.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('asignacion.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-check-square"></i>
                     <span>Asignación</span>
                 </a>
             </li>
@@ -101,7 +101,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('devolucion.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-undo-alt"></i>
                     <span>Devolución</span>
                 </a>
             </li>
@@ -110,7 +110,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('inventario.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-info"></i>
+                    <i class="fas fa-boxes"></i>
                     <span>Inventario</span>
                 </a>
             </li>
@@ -124,18 +124,36 @@
                 </a>
             </li>
             @endcan
+            @can('salida_revision.index')
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('salida_revision.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-wrench"></i>
+                    <span>Salida a revisión</span>
+                </a>
+            </li>
+            @endcan
+            @can('baja_inventario.index')
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="{{route('bajainventario.index')}}"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-trash"></i>
+                    <span>Baja de inventario</span>
+                </a>
+            </li>
+            @endcan
             <!-- Divider -->
             <hr class="sidebar-divider">
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Gestión
+                Registro
             </div>
             @can('persona.index')
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('persona.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-id-card"></i>
                     <span>Persona</span>
                 </a>
             </li>
@@ -162,7 +180,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('area.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-th-large"></i>
                     <span>Area</span>
                 </a>
             </li>
@@ -171,7 +189,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('cargo.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-briefcase"></i>
                     <span>Cargo</span>
                 </a>
             </li>
@@ -180,7 +198,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('marca.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fab fa-medium-m"></i>
+                    <i class="fas fa-tag"></i>
                     <span>Marca</span>
                 </a>
             </li>
@@ -189,7 +207,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('modelo.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-cubes"></i>
                     <span>Modelo</span>
                 </a>
             </li>
@@ -199,18 +217,8 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('tipo_equipo.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-sliders-h"></i>
                     <span>Tipo de equipo</span>
-                </a>
-            </li>
-            @endcan
-            
-            @can('baja_inventario.index')
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{{route('bajainventario.index')}}"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
-                    <span>Baja de inventario</span>
                 </a>
             </li>
             @endcan
@@ -218,7 +226,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('motivo_devolucion.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-info-circle"></i>
                     <span>Motivo de devolución</span>
                 </a>
             </li>
@@ -227,7 +235,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('motivo_baja.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-info-circle"></i>
                     <span>Motivo de baja</span>
                 </a>
             </li>
@@ -236,21 +244,11 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('proveedor.index')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-tag"></i>
+                    <i class="fas fa-truck"></i>
                     <span>Proveedor</span>
                 </a>
             </li>
             @endcan
-            @can('salida_revision.index')
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="{{route('salida_revision.index')}}"
-                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-wrench"></i>
-                    <span>Salida a revisión</span>
-                </a>
-            </li>
-            @endcan
-
             <!-- Divider -->
             <hr class="sidebar-divider">
             <div class="sidebar-heading">
@@ -259,14 +257,14 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('equipo.grafico')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-laptop"></i>
                     <span>Cantidad de laptops</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" href="{{route('equipo.grafico_anio')}}"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-user-friends"></i>
+                    <i class="fas fa-calendar-alt"></i>
                     <span>Equipos por Año</span>
                 </a>
             </li>
